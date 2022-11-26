@@ -87,6 +87,15 @@
               </nav>
             </div>
             <div class="hidden justify-end pr-16 sm:flex lg:pr-0">
+              {% if current_user.is_authenticated %}
+              <a
+                href="logout"
+                class="signUpBtn rounded-lg bg-white bg-opacity-20 py-3 px-6 text-base font-medium text-white duration-300 ease-in-out hover:bg-opacity-100 hover:text-dark"
+              >
+                Sign out
+              </a>
+              {% else %}
+
               <a
                 href="signin "
                 class="loginBtn py-3 px-7 text-base font-medium text-white hover:opacity-70"
@@ -99,6 +108,7 @@
               >
                 Sign Up
               </a>
+{% endif %}
             </div>
           </div>
         </div>
@@ -241,6 +251,8 @@
                                 class="bordder-[#E9EDF4] w-full rounded-md border bg-[#FCFDFE] py-3 px-5 text-base text-body-color placeholder-[#ACB6BE] outline-none transition focus:border-primary focus-visible:shadow-none"></textarea>
                               
                             </div>
+                            
+                            
                             <button type="submit">
                               <span>Send</span>
                               <svg
@@ -277,6 +289,7 @@
                                 </g>
                               </svg>
                             </button>
+                            
                           </form>
                           <div>
                             <span class="absolute top-1 right-1">
@@ -552,7 +565,7 @@
                 </li>
                 <li>
                   <a
-                    href="javascript:void(0)"
+                    href="privacy"
                     class="mb-2 inline-block text-base leading-loose text-[#f3f4fe] hover:text-primary"
                   >
                     Privacy policy
@@ -590,12 +603,12 @@
                 <div
                   class="-mx-3 flex items-center justify-center md:justify-start"
                 >
-                  <a
-                    href="javascript:void(0)"
-                    class="px-3 text-base text-[#f3f4fe] hover:text-primary"
-                  >
-                    Privacy policy
-                  </a>
+                <a
+                href="privacy"
+                class="px-3 text-base text-[#f3f4fe] hover:text-primary"
+              >
+                Privacy policy
+              </a>
                   <a
                     href="javascript:void(0)"
                     class="px-3 text-base text-[#f3f4fe] hover:text-primary"

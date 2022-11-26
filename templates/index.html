@@ -89,24 +89,41 @@
               </nav>
             </div>
             <div class="hidden justify-end pr-16 sm:flex lg:pr-0">
+              {% if current_user.is_authenticated %}
+              <a
+                href="try"
+                class="loginBtn py-3 px-7 text-base font-medium text-white hover:opacity-70"
+              >
+                Try it Out
+              </a>
+              <a
+                href="logout"
+                class="signUpBtn rounded-lg bg-white bg-opacity-20 py-3 px-6 text-base font-medium text-white duration-300 ease-in-out hover:bg-opacity-100 hover:text-dark"
+              >
+                Sign out
+              </a>
+              
+              {% else %}
               <a
                 href="try"
                 class="signUpBtn rounded-lg bg-white bg-opacity-20 py-3 px-6 text-base font-medium text-white duration-300 ease-in-out hover:bg-opacity-100 hover:text-dark"
               >
                 Try it Out
               </a>
+
               <a
-                href="signin"
+                href="signin "
                 class="loginBtn py-3 px-7 text-base font-medium text-white hover:opacity-70"
               >
                 Sign In
               </a>
               <a
-                href="signup"
+                href="signup "
                 class="signUpBtn rounded-lg bg-white bg-opacity-20 py-3 px-6 text-base font-medium text-white duration-300 ease-in-out hover:bg-opacity-100 hover:text-dark"
               >
                 Sign Up
               </a>
+{% endif %}
               
             </div>
           </div>
@@ -2127,7 +2144,7 @@
                 </li>
                 <li>
                   <a
-                    href="javascript:void(0)"
+                    href="privacy"
                     class="mb-2 inline-block text-base leading-loose text-[#f3f4fe] hover:text-primary"
                   >
                     Privacy policy
@@ -2165,12 +2182,12 @@
                 <div
                   class="-mx-3 flex items-center justify-center md:justify-start"
                 >
-                  <a
-                    href="javascript:void(0)"
-                    class="px-3 text-base text-[#f3f4fe] hover:text-primary"
-                  >
-                    Privacy policy
-                  </a>
+                <a
+                href="privacy"
+                class="px-3 text-base text-[#f3f4fe] hover:text-primary"
+              >
+                Privacy policy
+              </a>
                   <a
                     href="javascript:void(0)"
                     class="px-3 text-base text-[#f3f4fe] hover:text-primary"

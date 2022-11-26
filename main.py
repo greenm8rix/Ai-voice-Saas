@@ -1,3 +1,6 @@
+import json
+import threading
+from time import sleep
 import uuid
 from flask_migrate import Migrate
 import os
@@ -19,12 +22,16 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
 from model import LoginModel
+import nltk.data
+from audiojoiner import concatenate_audio_moviepy
 
+nltk.download("punkt")
+tokenizer = nltk.data.load("tokenizers/punkt/english.pickle")
 api = Api(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "login"
+login_manager.login_view = "signin"
 
 
 @login_manager.user_loader
@@ -107,21 +114,43 @@ class LoginForm(FlaskForm):
     )
 
 
-class AiVoiceResource(Resource):
-    @app.route("/user_download")
-    def user_download(Url):
+def heavy_func(version, text_file, voice_file):
+    # output = version.predict(
+    #     text=text_file, voice_a=voice_file, preset="high_quality", cvvp_amount=1
+    # )
 
+    AiVoiceResource.user_download(
+        "https://replicate.delivery/pbxt/sxgbNlGz6qJcHxinpo6l5ttArsrWgcfCnRYgmvhRvqeYEmBQA/tortoise.mp3",
+        text_file,
+    )
+
+
+class AiVoiceResource(Resource):
+    @app.route("/privacy")
+    def privacypolicy():
+        return redirect("https://merchant.razorpay.com/policy/KkN3ZDoj8H88D6/privacy")
+
+    @app.route("/user_download")
+    def user_download(Url, text_file):
+        normal_string = "".join(ch for ch in text_file if ch.isalnum())
         r = requests.get(Url, allow_redirects=True)
-        open("/tmp/facebook.mp3", "wb").write(r.content)
+        open(
+            f"C:\\Users\\nawaf\\Desktop\\ExalioDevelopment\\Ai voice Saas\\records\\{normal_string}.mp3",
+            "wb",
+        ).write(r.content)
 
     @app.route("/")
     @app.route("/index")
     def index():
         return render_template("index.html")
 
+    @login_required
     @app.route("/try")
     def trynow():
-        return render_template("try.html")
+        if current_user.is_authenticated:
+            return render_template("try.html")
+        else:
+            return redirect(url_for("signin"))
 
     @app.route("/signin", methods=["GET", "POST"])
     def signin():
@@ -171,22 +200,32 @@ class AiVoiceResource(Resource):
     def post(self):
         text_file = request.form["text"]
         voice_file = request.form["voice"]
-        os.environ["REPLICATE_API_TOKEN"] = "32e56e6e80146f4301c4dd5dd7c50f9f6d941913"
+        os.environ["REPLICATE_API_TOKEN"] = "b20bf20c9a8f6d4b5cf4c31cfe56f7647e95654a"
         model = replicate.models.get("afiaka87/tortoise-tts")
         version = model.versions.get(
             "e9658de4b325863c4fcdc12d94bb7c9b54cbfe351b7ca1b36860008172b91c71"
         )
+        splitting_into_smaller = tokenizer.tokenize(text_file)
+        number = []
+        threads = []
+        for i in splitting_into_smaller:
+            normal_string = "".join(ch for ch in i if ch.isalnum())
+            number.append(normal_string)
+            j = threading.Thread(target=heavy_func, args=(version, i, voice_file))
+            threads.append(j)
 
-        output = version.predict(
-            text=text_file, voice_a=voice_file, preset="high_quality", cvvp_amount=0
-        )
-        AiVoiceResource.user_download(output)
+        for x in threads:
+            x.start()
 
-        return send_file("/tmp/facebook.mp3", as_attachment=True)
+        for x in threads:
+            x.join()
+            print(len(threads))
+        concatenate_audio_moviepy(number)
+        # return send_file("/tmp/facebook.mp3", as_attachment=True)
 
 
 api.add_resource(AiVoiceResource, "/aivoice")
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    app.run(host="127.0.0.1", port=8080, debug=True, threaded=True)
