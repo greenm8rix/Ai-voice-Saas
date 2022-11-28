@@ -10,6 +10,7 @@ from flask_restful import Resource, Api
 import requests
 from calculator import get_subscription_tier
 from config import db, app
+import concurrent
 from flask_login import (
     UserMixin,
     login_user,
@@ -31,6 +32,7 @@ from flask_bcrypt import Bcrypt
 from model import LoginModel
 import nltk.data
 from audiojoiner import concatenate_audio_moviepy
+from queue import Queue
 
 nltk.download("punkt")
 tokenizer = nltk.data.load("tokenizers/punkt/english.pickle")
@@ -39,6 +41,9 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "signin"
+
+
+jobs = Queue()
 
 
 @login_manager.user_loader
@@ -156,15 +161,18 @@ class TryNow(FlaskForm):
         )
 
 
-def heavy_func(version, text_file, voice_file):
-    # output = version.predict(
-    #     text=text_file, voice_a=voice_file, preset="high_quality", cvvp_amount=1
-    # )
+def heavy_func(q, version, text_file, voice_file):
+    while not q.empty():
+        value = q.get()
+        # output = version.predict(
+        #     text=text_file, voice_a=voice_file, preset="high_quality", cvvp_amount=1
+        # )
 
-    AiVoiceResource.user_download(
-        "https://replicate.delivery/pbxt/sxgbNlGz6qJcHxinpo6l5ttArsrWgcfCnRYgmvhRvqeYEmBQA/tortoise.mp3",
-        text_file,
-    )
+        AiVoiceResource.user_download(
+            "https://replicate.delivery/pbxt/sxgbNlGz6qJcHxinpo6l5ttArsrWgcfCnRYgmvhRvqeYEmBQA/tortoise.mp3",
+            text_file,
+        )
+        q.task_done()
 
 
 class AiVoiceResource(Resource):
@@ -177,7 +185,7 @@ class AiVoiceResource(Resource):
         normal_string = "".join(ch for ch in text_file if ch.isalnum())
         r = requests.get(Url, allow_redirects=True)
         open(
-            f"tmp/records/{normal_string}.mp3",
+            f"/tmp/{normal_string}.mp3",
             "wb",
         ).write(r.content)
 
@@ -253,6 +261,8 @@ class AiVoiceResource(Resource):
     @login_required
     def ai_voice():
         form = TryNow()
+        for i in range(5):
+            jobs.put(i)
         if form.validate_on_submit:
             text_file = form.text_file.data
             if current_user.is_authenticated:
@@ -285,24 +295,26 @@ class AiVoiceResource(Resource):
             splitting_into_smaller = tokenizer.tokenize(text_file)
             number = []
             threads = []
-
             for i in splitting_into_smaller:
                 normal_string = "".join(ch for ch in i if ch.isalnum())
                 number.append(normal_string)
-                j = threading.Thread(target=heavy_func, args=(version, i, voice_file))
+                j = threading.Thread(
+                    target=heavy_func, args=(jobs, version, i, voice_file)
+                )
                 threads.append(j)
+                # with concurrent.futures.ThreadPoolExecutor(8) as executor:
+                #     future = executor.submit(heavy_func, version, i, voice_file)
 
             for x in threads:
                 x.start()
-
-            for x in threads:
-                x.join()
+            h = threading.active_count()
+            print(h)
             for x in threads:
                 x.join()
             concatenate_audio_moviepy(number)
             user_data.downloads += 1
             db.session.commit()
-            return send_file("tmp/audios/output.mp3", as_attachment=True)
+            return send_file("/tmp/output.mp3", as_attachment=True)
 
 
 api.add_resource(AiVoiceResource)

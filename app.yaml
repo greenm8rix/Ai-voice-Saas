@@ -4,3 +4,4 @@ env_variables:
   CLOUD_SQL_PASSWORD: "&2Pdd4zAp[>.8QDa"
   CLOUD_SQL_DATABASE_NAME: bravo_ai
   CLOUD_SQL_CONNECTION_NAME: bravo-ai-voice:asia-south1:bravo-instace
+entrypoint: gunicorn -b :8080 main:app

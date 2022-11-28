@@ -1,6 +1,6 @@
 def get_subscription_tier(subscription_tier):
     if subscription_tier == "FREE" or subscription_tier == None:
-        max_character_count = 1000
+        max_character_count = 10000
         max_downloads = 1
     if subscription_tier == "Personal":
         max_character_count = 3000
