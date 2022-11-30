@@ -11,3 +11,5 @@ class LoginModel(db.Model, UserMixin):
     password = db.Column(db.String(80), nullable=False)
     subscription_tier = db.Column(db.String())
     downloads = db.Column(db.INTEGER(), nullable=False)
+    progress = db.Column(db.String(80), nullable=False)
+    file_url = db.Column(db.String(200), nullable=True)

@@ -32,6 +32,5 @@
 # Ignored by the build system
 
 /setup.cfg
-/storage.py
 tmp/
 /tmp

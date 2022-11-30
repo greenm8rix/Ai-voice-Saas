@@ -10,7 +10,11 @@ db_user = os.environ.get("CLOUD_SQL_USERNAME")
 db_password = os.environ.get("CLOUD_SQL_PASSWORD")
 db_name = os.environ.get("CLOUD_SQL_DATABASE_NAME")
 db_connection_name = os.environ.get("CLOUD_SQL_CONNECTION_NAME")
-app = Flask(__name__, template_folder="templates", static_folder="static")
+app = Flask(
+    __name__,
+    template_folder="templates",
+    static_folder="static",
+)
 
 # app.config[
 #     "SQLALCHEMY_DATABASE_URI"

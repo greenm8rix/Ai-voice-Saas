@@ -1,6 +1,7 @@
 import json
 import threading
 from time import sleep
+import time
 import uuid
 from flask_migrate import Migrate
 import os
@@ -41,7 +42,6 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "signin"
-
 
 jobs = Queue()
 
@@ -162,12 +162,11 @@ class TryNow(FlaskForm):
 
 
 def heavy_func(q, version, text_file, voice_file):
+    # output = version.predict(
+    #     text=text_file, voice_a=voice_file, preset="high_quality", cvvp_amount=1
+    # )
     while not q.empty():
         value = q.get()
-        # output = version.predict(
-        #     text=text_file, voice_a=voice_file, preset="high_quality", cvvp_amount=1
-        # )
-
         AiVoiceResource.user_download(
             "https://replicate.delivery/pbxt/sxgbNlGz6qJcHxinpo6l5ttArsrWgcfCnRYgmvhRvqeYEmBQA/tortoise.mp3",
             text_file,
@@ -176,6 +175,20 @@ def heavy_func(q, version, text_file, voice_file):
 
 
 class AiVoiceResource(Resource):
+    @app.route("/status", methods=["GET"])
+    @login_required
+    def getStatus():
+        if current_user.is_authenticated:
+            user = current_user.get_id()
+            user_data = (
+                db.session.query(LoginModel).filter(LoginModel.id == user).first()
+            )
+            statusList = {
+                "status": user_data.progress,
+                "filename": user_data.file_url,
+            }
+            return json.dumps(statusList)
+
     @app.route("/privacy")
     def privacypolicy():
         return redirect("https://merchant.razorpay.com/policy/KkN3ZDoj8H88D6/privacy")
@@ -188,6 +201,11 @@ class AiVoiceResource(Resource):
             f"/tmp/{normal_string}.mp3",
             "wb",
         ).write(r.content)
+
+    @app.route("/dashboard")
+    @login_required
+    def dashboard():
+        return render_template("dashboard.html")
 
     @app.route("/")
     @app.route("/index")
@@ -261,8 +279,6 @@ class AiVoiceResource(Resource):
     @login_required
     def ai_voice():
         form = TryNow()
-        for i in range(5):
-            jobs.put(i)
         if form.validate_on_submit:
             text_file = form.text_file.data
             if current_user.is_authenticated:
@@ -298,23 +314,21 @@ class AiVoiceResource(Resource):
             for i in splitting_into_smaller:
                 normal_string = "".join(ch for ch in i if ch.isalnum())
                 number.append(normal_string)
-                j = threading.Thread(
-                    target=heavy_func, args=(jobs, version, i, voice_file)
-                )
+                j = threading.Thread(target=heavy_func, args=(version, i, voice_file))
                 threads.append(j)
-                # with concurrent.futures.ThreadPoolExecutor(8) as executor:
-                #     future = executor.submit(heavy_func, version, i, voice_file)
 
             for x in threads:
+                print(threading.active_count())
                 x.start()
-            h = threading.active_count()
-            print(h)
-            for x in threads:
-                x.join()
-            concatenate_audio_moviepy(number)
+            file_name = user_data.username + str(user_data.downloads)
+            username = user_data.username
+            threading.Thread(
+                target=concatenate_audio_moviepy,
+                args=(number, threads, file_name, username),
+            ).start()
             user_data.downloads += 1
             db.session.commit()
-            return send_file("/tmp/output.mp3", as_attachment=True)
+            return redirect(url_for("dashboard"))
 
 
 api.add_resource(AiVoiceResource)

@@ -8,4 +8,5 @@ def get_subscription_tier(subscription_tier):
     if subscription_tier == "ContentCreator":
         max_character_count = 3000
         max_downloads = 30
+
     return max_character_count, max_downloads
