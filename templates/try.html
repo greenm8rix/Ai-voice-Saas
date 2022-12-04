@@ -245,7 +245,22 @@
                                 <label for="voice">Choose a Voice:</label>
                                 {{form.voice}}
                               
-                              </div>      
+                              </div>
+                              <div class="mb-6">
+                                <label for="Quality">Choose a Quality:</label>
+                                {% if current_user.subscription_tier=="FREE" %}
+                                {{form.low_quality}}
+                                {% else %}
+                                {{form.other_quality}}
+                              </div> 
+                                <div class="mb-6">
+                                  <label for="Custom_Voice">Upload file for custom Voice:</label>
+                                  {{form.Custom_Voice}}
+                                
+                                </div> 
+                                {% endif %}
+                              </div>
+                                   
                             <div class="mb-6">
                               {{form.text_file}}
                             </div>
@@ -554,14 +569,7 @@
             <div class="mb-10 w-full">
               <h4 class="mb-9 text-lg font-semibold text-white">Features</h4>
               <ul>
-                <li>
-                  <a
-                    href="javascript:void(0)"
-                    class="mb-2 inline-block text-base leading-loose text-[#f3f4fe] hover:text-primary"
-                  >
-                    How it works
-                  </a>
-                </li>
+                
                 <li>
                   <a
                     href="privacy"
@@ -572,7 +580,7 @@
                 </li>
                 <li>
                   <a
-                    href="javascript:void(0)"
+                    href="Tos"
                     class="mb-2 inline-block text-base leading-loose text-[#f3f4fe] hover:text-primary"
                   >
                     Terms of Service
@@ -580,7 +588,7 @@
                 </li>
                 <li>
                   <a
-                    href="javascript:void(0)"
+                    href="Tos"
                     class="mb-2 inline-block text-base leading-loose text-[#f3f4fe] hover:text-primary"
                   >
                     Refund policy
@@ -608,14 +616,9 @@
               >
                 Privacy policy
               </a>
+                  
                   <a
-                    href="javascript:void(0)"
-                    class="px-3 text-base text-[#f3f4fe] hover:text-primary"
-                  >
-                    Legal notice
-                  </a>
-                  <a
-                    href="javascript:void(0)"
+                    href="Tos"
                     class="px-3 text-base text-[#f3f4fe] hover:text-primary"
                   >
                     Terms of service
@@ -922,11 +925,45 @@
     <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-489F54ZEJB"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-489F54ZEJB');
+  $('textarea').keyup(function() {
+    
+  var characterCount = $(this).val().length,
+      current = $('#current'),
+      maximum = $('#maximum'),
+      theCount = $('#the-count');
+    
+  current.text(characterCount);
+ 
+  
+  /*This isn't entirely necessary, just playin around*/
+  if (characterCount < 70) {
+    current.css('color', '#666');
+  }
+  if (characterCount > 70 && characterCount < 90) {
+    current.css('color', '#6d5555');
+  }
+  if (characterCount > 90 && characterCount < 100) {
+    current.css('color', '#793535');
+  }
+  if (characterCount > 100 && characterCount < 120) {
+    current.css('color', '#841c1c');
+  }
+  if (characterCount > 120 && characterCount < 139) {
+    current.css('color', '#8f0001');
+  }
+  
+  if (characterCount >= 140) {
+    maximum.css('color', '#8f0001');
+    current.css('color', '#8f0001');
+    theCount.css('font-weight','bold');
+  } else {
+    maximum.css('color','#666');
+    theCount.css('font-weight','normal');
+  }
+  
+      
+});
 </script>
   </body>
 </html>

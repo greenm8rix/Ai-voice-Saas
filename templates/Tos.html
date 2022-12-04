@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terms Of Service</title>
+    <link
+      rel="shortcut icon"
+      href="{{url_for('static',filename='src/assets/images/favicon.png')}}"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="{{url_for('static',filename='src/assets/css/animate.css')}}" />
+    <link rel="stylesheet" href="{{url_for('static',filename='src/assets/css/tailwind.css')}}" />
+
+    <!-- ==== WOW JS ==== -->
+    <script src="static/src/assets/js/wow.min.js"></script>
+    <script>
+      new WOW().init();
+    </script>
+  </head>
+  <body>
+    <!-- ====== Navbar Section Start -->
+    <div
+      class="ud-header absolute top-0 left-0 z-40 flex w-full items-center bg-transparent"
+    >
+      <div class="container">
+        <div class="relative -mx-4 flex items-center justify-between">
+          <div class="w-60 max-w-full px-4">
+            <a href="index " class="navbar-logo block w-full py-5">
+              <img
+                src="{{url_for('static',filename='src/assets/images/logo/logo-white.svg')}}"
+                alt="logo"
+                class="header-logo w-full"
+              />
+            </a>
+          </div>
+          <div class="flex w-full items-center justify-between px-4">
+            <div>
+              <button
+                id="navbarToggler"
+                class="absolute right-4 top-1/2 block -translate-y-1/2 rounded-lg px-3 py-[6px] ring-primary focus:ring-2 lg:hidden"
+              >
+                <span
+                  class="relative my-[6px] block h-[2px] w-[30px] bg-white"
+                ></span>
+                <span
+                  class="relative my-[6px] block h-[2px] w-[30px] bg-white"
+                ></span>
+                <span
+                  class="relative my-[6px] block h-[2px] w-[30px] bg-white"
+                ></span>
+              </button>
+              <nav
+                id="navbarCollapse"
+                class="absolute right-4 top-full hidden w-full max-w-[250px] rounded-lg bg-white py-5 shadow-lg lg:static lg:block lg:w-full lg:max-w-full lg:bg-transparent lg:py-0 lg:px-4 lg:shadow-none xl:px-6"
+              >
+                <ul class="blcok lg:flex">
+                  <li class="group relative">
+                    <a
+                      href="index"
+                      class="ud-menu-scroll mx-8 flex py-2 text-base text-dark group-hover:text-primary lg:mr-0 lg:inline-flex lg:py-6 lg:px-0 lg:text-white lg:group-hover:text-white lg:group-hover:opacity-70"
+                    >
+                      Home
+                    </a>
+                  </li>
+                  
+                  <li class="group relative">
+                    <a
+                      href="contact "
+                      class="ud-menu-scroll mx-8 flex py-2 text-base text-dark group-hover:text-primary lg:mr-0 lg:ml-7 lg:inline-flex lg:py-6 lg:px-0 lg:text-white lg:group-hover:text-white lg:group-hover:opacity-70 xl:ml-12"
+                    >
+                      Contact
+                    </a>
+                  </li>
+                  
+                  <li class="group relative">
+                    <a
+                      href="pricing "
+                      class="ud-menu-scroll mx-8 flex py-2 text-base text-dark group-hover:text-primary lg:mr-0 lg:ml-7 lg:inline-flex lg:py-6 lg:px-0 lg:text-white lg:group-hover:text-white lg:group-hover:opacity-70 xl:ml-12"
+                    >
+                      Pricing
+                    </a>
+                  </li>
+                  <li class="group relative">
+                    <a
+                      href="Examples"
+                      class="ud-menu-scroll mx-8 flex py-2 text-base text-dark group-hover:text-primary lg:mr-0 lg:ml-7 lg:inline-flex lg:py-6 lg:px-0 lg:text-white lg:group-hover:text-white lg:group-hover:opacity-70 xl:ml-12"
+                    >
+                      Examples
+                    </a>
+                  </li>
+                  
+                </ul>
+              </nav>
+            </div>
+            <div class="hidden justify-end pr-16 sm:flex lg:pr-0">
+              <a
+                href="try "
+                class="loginBtn py-3 px-7 text-base font-medium text-white hover:opacity-70"
+              >
+                Try now
+              </a>
+              <a
+                href="signup "
+                class="signUpBtn rounded-lg bg-white bg-opacity-20 py-3 px-6 text-base font-medium text-white duration-300 ease-in-out hover:bg-opacity-100 hover:text-dark"
+              >
+                Sign Up
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ====== Navbar Section End -->
+    <div
+      class="relative z-10 overflow-hidden bg-primary pt-[120px] pb-[100px] md:pt-[130px] lg:pt-[160px]"
+    >
+      <div class="container">
+        <div class="-mx-4 flex flex-wrap items-center">
+          <div class="w-full px-4">
+            <div class="text-center">
+              <h1 class="text-4xl font-semibold text-white">Terms Of Service</h1>
+            </div>
+           
+          </div>
+          
+        </div>
+        
+      </div>
+      
+      <div>
+        
+        <span class="absolute top-0 left-0 z-[-1]">
+          <svg
+            width="495"
+            height="470"
+            viewBox="0 0 495 470"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+          
+            <circle
+              cx="55"
+              cy="442"
+              r="138"
+              stroke="white"
+              stroke-opacity="0.04"
+              stroke-width="50"
+            />
+            <circle
+              cx="446"
+              r="39"
+              stroke="white"
+              stroke-opacity="0.04"
+              stroke-width="20"
+            />
+            <path
+              d="M245.406 137.609L233.985 94.9852L276.609 106.406L245.406 137.609Z"
+              stroke="white"
+              stroke-opacity="0.08"
+              stroke-width="12"
+            />
+          </svg>
+        </span>
+        <span class="absolute top-0 right-0 z-[-1]">
+          <svg
+            width="493"
+            height="470"
+            viewBox="0 0 493 470"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="462"
+              cy="5"
+              r="138"
+              stroke="white"
+              stroke-opacity="0.04"
+              stroke-width="50"
+            />
+            <circle
+              cx="49"
+              cy="470"
+              r="39"
+              stroke="white"
+              stroke-opacity="0.04"
+              stroke-width="20"
+            />
+            <path
+              d="M222.393 226.701L272.808 213.192L259.299 263.607L222.393 226.701Z"
+              stroke="white"
+              stroke-opacity="0.06"
+              stroke-width="13"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
+    <p class="font_8">Bravo or ExalioDevelopment SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES, OR ANY LOSS OF REVENUE OR PROFITS (EXCLUDING FEES UNDER THIS AGREEMENT), DATA, OR DATA USE ARISING IN CONNECTION WITH YOUR USE OR INABILITY TO USE THE SERVICE.</p>
+
+<p class="font_8">&nbsp;</p>
+
+<p class="font_8">Bravo or ExalioDevelopment’S MAXIMUM LIABILITY FOR ANY AND ALL DAMAGES ARISING OUT OF OR RELATED TO THIS AGREEMENT, THE SERVICE OR A YOUR PLAN, WHETHER IN CONTRACT OR TORT, OR OTHERWISE, SHALL NOT EXCEED, IN THE AGGREGATE, THE TOTAL AMOUNTS ACTUALLY PAID TO Bravo or ExalioDevelopment FOR THE SERVICES IN THE THREE (3) MONTH PERIOD IMMEDIATELY PRECEDING THE EVENT GIVING RISE TO SUCH CLAIM LESS ANY REFUNDS OR CREDITS RECEIVED BY YOU FROM Bravo or ExalioDevelopment UNDER SUCH PLAN.</p>
+
+<h4 class="font_4">&nbsp;</h4>
+
+<h4 class="font_4"><span><span class="wixGuard">​</span></span></h4>
+
+<h4 class="font_4"><span><span style="font-weight:normal;"><span style="font-family:poppins-semibold,poppins,sans-serif;"><span style="color:#755EE5;">Cancellation &amp; Refund Policy</span></span></span></span></h4>
+
+<h4 class="font_4"><span>​</span></h4>
+
+<p class="font_8">You can cancel your Plan at any time to stop the auto renewal of your plan.</p>
+
+<p class="font_8"><span class="wixGuard">​</span></p>
+
+<p class="font_8">If you decide to cancel your Plan, you will still have access to your Plan until the day of expiration and will be charged accordingly. You can also reconvene the auto renewal of your Plan anytime before the Plan expires.</p>
+
+<p class="font_8"><span class="wixGuard">​</span></p>
+
+<p class="font_8">Due to the nature of our services, we will not be providing refunds once you have confirmed payment of your purchase.</p>
+
+<p class="font_8">Bravo or ExalioDevelopment is not responsible for any bank charges, commissions or overdrafts. The only way to remove these charges is through direct negotiation with your bank.</p>
+
+<p class="font_8"><span class="wixGuard">​</span></p>
+
+<p class="font_8">If you update your plan at any time, your existing plan will be cancelled and the new plan, with all its service capabilities and duration, will go in effect immediately upon payment confirmation unless otherwise instructed.</p>
+
+<h4 class="font_4">&nbsp;</h4>
+
+<h4 class="font_4"><span><span class="wixGuard">​</span></span></h4>
+
+<h4 class="font_4"><span><span style="font-weight:normal;"><span style="font-family:poppins-semibold,poppins,sans-serif;"><span style="color:#755EE5;">Use Rights. Commercial Rights &amp; Resell Rights</span></span></span></span></h4>
+
+<h4 class="font_4">&nbsp;</h4>
+
+<p class="font_8">During the term of your Plan, you may use the Voice Skins and Custom Voice for the usages permitted by your Plan as provided in the Usage Guideline below.&nbsp; Voice Skins and Custom Voices you download during the term of your Plan may be copied, transmitted and synched with audio visual works so long as such use is within the scope of the rights granted in your Plan. The foregoing rights and licenses and those defined in the Usage Guideline are conditioned upon your strict adherence to the terms and conditions hereof and any other applicable terms and conditions that Bravo or ExalioDevelopment may present.</p>
+
+<p class="font_8"><span class="wixGuard">​</span></p>
+
+<p class="font_8">Commercial Rights include any monetized, business-related uses such as videos, audio books, advertising, promotion, web page vlogging, product integration that you do with Voice Skins and Custom Voice created by Bravo or ExalioDevelopment.<br>
+<br>
+You may not use the Voice Skins or Custom Voice for any illegal, immoral, or defamatory purposes.<br>
+<br>
+Commercial rights do not include reselling&nbsp; or white labeling access to the Services in order to obtain Voice Skins and Custom Voices for re-sale or re-license to your customer or other third parties.</p>
+
+<p class="font_8"><span class="wixGuard">​</span></p>
+
+<p class="font_8">If you want to white label the Bravo or ExalioDevelopment Service to your customers, please contact Bravo or ExalioDevelopment separately.<br>
+<br>
+<br>
+Some examples of use cases that require separately authorized resell rights not included in any of the Plan include web and mobile applications that resemble, access or provide a gateway to Bravo or ExalioDevelopment Studio or Bravo or ExalioDevelopment API's core functionality for re-sale by you to third parties.</p>
+
+<p class="font_8">&nbsp;</p>
+
+<p class="font_8">Bravo or ExalioDevelopment shall own all right, title and interest in Voice Skins made available to you on the Service, but disclaims any ownership right in the text(s) you submit to create a Voice Skin audio file(s) or Custom Voice audio file(s).</p>
+
+<h4 class="font_4">&nbsp;</h4>
+
+<h4 class="font_4"><span><span style="font-weight:normal;"><span style="font-family:poppins-semibold,poppins,sans-serif;"><span style="color:#755EE5;">Custom Voice Cloning</span></span></span></span></h4>
+
+<h4 class="font_4"><span><span class="wixGuard">​</span>​</span></h4>
+
+<p class="font_8">If you create your own Custom Voice, additional terms and conditions shall apply.&nbsp; Please read them <span style="text-decoration:underline;"></span><span style="font-family:poppins-semibold,poppins,sans-serif;"><span style="text-decoration:underline;"></span></span><span style="text-decoration:underline;"></span>.</p>
+
+<p class="font_8"><span class="wixGuard">​</span></p>
+
+<p class="font_8">By using Custom Voice Cloning services offered by Bravo or ExalioDevelopment, you grant permission to Bravo or ExalioDevelopment and its affiliates to use the data you provided for research and development purposes to further improve the technology, products, and services they offer. Any data, including sensitive personal information, will not be shared with 3rd parties unless for the purposes of research, development, and enhancement of technology and services offered by Bravo or ExalioDevelopment and its affiliates.</p>
+
+<h4 class="font_4"><span><span class="wixGuard">​</span></span></h4>
+
+<h4 class="font_4"><span><span style="font-weight:normal;"><span style="font-family:poppins-semibold,poppins,sans-serif;"><span style="color:#755EE5;">Support and Service Level Agreement</span></span></span></span></h4>
+
+<h4 class="font_4"><span>​</span></h4>
+
+<p class="font_8">Subject to the terms of these Terms of Service, Bravo or ExalioDevelopment will use commercially reasonable efforts to provide you the Services. As part of the registration process, you will identify an administrative user name and password for your Bravo or ExalioDevelopment account. Bravo or ExalioDevelopment reserves the right to refuse registration of, or cancel passwords it deems inappropriate.</p>
+
+<p class="font_8"><span class="wixGuard">​</span></p>
+
+<p class="font_8">Subject to the terms hereof, Bravo or ExalioDevelopment will provide you with reasonable technical support services in accordance with Bravo or ExalioDevelopment’s standard practice.</p>
+
+<p class="font_8">&nbsp;</p>
+
+<p class="font_8">Bravo or ExalioDevelopment shall use reasonable efforts consistent with prevailing industry standards to maintain the Services in a manner which minimizes errors and interruptions in the Services in a professional and workmanlike manner. Services may be temporarily unavailable for scheduled maintenance or for unscheduled emergency maintenance, either by Bravo or ExalioDevelopment or by third-party providers, or because of other causes beyond Bravo or ExalioDevelopment’s reasonable control, but Bravo or ExalioDevelopment shall use reasonable efforts to provide advance notice in writing or by e-mail of any scheduled service disruption (at least 5 days’ notice in advance). EXCEPT AS EXPRESSLY SET FORTH IN THIS SECTION, THE SERVICES ARE PROVIDED “AS IS” AND Bravo or ExalioDevelopment DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING IMPLIED WARRANTIES OF MERCHANTABILITY.</p>
+
+<p class="font_8"><span><span style="text-decoration:underline;"><span class="wixGuard">​</span></span></span></p>
+
+<p class="font_8"><span style="color:#000000;"><span style="font-style:normal;"><span style="font-family:poppins-extralight,poppins,sans-serif;"><span style="font-weight:700;"><span style="font-size:18px;"><span><span class="wixGuard">​</span></span></span></span></span></span></span></p>
+
+<p class="font_8">&nbsp;</p>
+
+<p class="font_8"><span style="font-style:normal;"><span style="font-size:18px;"><span><span style="font-weight:normal;"><span style="font-family:poppins-semibold,poppins,sans-serif;"><span style="color:#755EE5;">Voice Marketplace</span></span></span></span></span></span></p>
+
+<p class="font_8"><span class="wixGuard">​</span></p>
+
+<p class="font_8"><span style="color:#000000;"><span style="font-style:normal;"><span style="font-family:poppins-extralight,poppins,sans-serif;"><span style="font-weight:700;"><span style="font-size:18px;"><span>"Usage of Voice" means the various authorized use of Voice Skins and Custom <span style="text-decoration:underline;">Voices downloaded</span> by a user with a paid subscription Plan"</span></span></span></span></span></span></p>
+
+<h3 class="font_3"><span><span class="wixGuard">​</span></span></h3>
+
+<h3 class="font_3"><span><span style="font-weight:normal;"><span style="font-family:poppins-semibold,poppins,sans-serif;"><span style="color:#755EE5;">Usage Guideline</span></span></span>​</span></h3>
+
+<h3 class="font_3"><span><span class="wixGuard">​</span></span></h3><section id="comp-km5n4vah" class="_3uJnK comp-km5n4vah-container undefined" data-testid="section-container"><div id="comp-km5n4vam2" data-testid="imageX" class="_1x22G"><style data-testid="scrollEffectStyle">#comp-km5n4vam2 img { height:100%}</style><wix-image id="img-comp-km5n4vam2" data-image-info="{&quot;containerId&quot;:&quot;comp-km5n4vam2&quot;,&quot;alignType&quot;:&quot;center&quot;,&quot;parallaxSpeed&quot;:1.5,&quot;sourceSets&quot;:[],&quot;imageData&quot;:{&quot;uri&quot;:&quot;nsplsh_69cca020e46443d88f3e0cb920a5073b~mv2.jpg&quot;,&quot;width&quot;:3500,&quot;height&quot;:2333,&quot;alt&quot;:&quot;&quot;,&quot;displayMode&quot;:&quot;fill&quot;,&quot;focalPoint&quot;:{&quot;x&quot;:50,&quot;y&quot;:73},&quot;scrollEffect&quot;:&quot;none&quot;}}" data-has-ssr-src="" data-src="https://static.wixstatic.com/media/nsplsh_69cca020e46443d88f3e0cb920a5073b~mv2.jpg/v1/fill/w_1343,h_401,fp_0.50_0.73,q_85,usm_0.66_1.00_0.01,enc_auto/nsplsh_69cca020e46443d88f3e0cb920a5073b~mv2.jpg"><picture></picture></wix-image></div><div id="comp-km5n4vax" class="_1Q9if _3bcaz" data-testid="richTextElement"><h2 class="font_2">Terms of Service ("Terms")</h2></div></section><section id="comp-km5n4vd11" class="_3uJnK comp-km5n4vd11-container undefined" data-testid="section-container"><div id="comp-km5n4vdd3" class="_1Q9if _3bcaz" data-testid="richTextElement"><p class="font_8"><span><span style="font-style:italic;">Last updated: decembe 2nd, 2022</span></span></p>
+
+<p class="font_8">&nbsp;</p>
+
+<p class="font_8">Please read these Terms of Service ("Terms", "Terms of Service") carefully before using <span style="text-decoration:underline;"></a></span>, <span style="text-decoration:underline;"> website, or any of the products and service offerings operated by Bravo or ExalioDevelopment Inc. ["us", "we", or "our"].</p>
+
+<p class="font_8"><span class="wixGuard">​</span></p>
+
+<p class="font_8">Your access to and use of the Service is conditioned on your acceptance of and compliance with these Terms. These Terms apply to all visitors, users and others who access or use the Service.</p>
+
+<p class="font_8"><span class="wixGuard">​</span></p>
+
+<p class="font_8">By accessing or using the Service you agree to be bound by these Terms. If you disagree with any part of the terms, then you may not access the Service.</p>
+
+<p class="font_8"><span class="wixGuard">​</span></p>
+
+<p class="font_8">If you create your own Custom Voice, additional terms and conditions shall apply.&nbsp; Please read them <span style="font-family:poppins-semibold,poppins,sans-serif;"><span style="text-decoration:underline;"></span></span>.</p></div></section><section id="comp-km5n4vdo1" class="_3uJnK comp-km5n4vdo1-container undefined" data-testid="section-container"><div id="comp-km5n4vdr" class="_1Q9if _3bcaz" data-testid="richTextElement"><p class="font_8">&nbsp;</p>
+
+<p class="font_8"><span><span class="wixGuard">​</span></span></p>
+
+<h3 class="font_3"><span><span style="color:#755EE5;"><span style="font-weight:normal;"><span style="font-family:poppins-semibold,poppins,sans-serif;">Accounts</span></span></span></span></h3>
+
+<h3 class="font_3"><span>​</span></h3>
+
+<p class="font_8">When you create an account with us, you must provide us information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your account on our Service.</p>
+
+<p class="font_8"><span class="wixGuard">​</span></p>
+
+<p class="font_8">You are responsible for safeguarding the password that you use to access the Service and for any activities or actions under your password, whether your password is with our Service or a third-party service.</p>
+
+<p class="font_8"><span class="wixGuard">​</span></p>
+
+<p class="font_8">You agree not to disclose your password to any third party. You must notify us immediately upon becoming aware of any breach of security or unauthorized use of your account.</p>
+
+<p class="font_8"><span><span class="wixGuard">​</span></span></p>
+
+<p class="font_8"><span><span class="wixGuard">​</span></span></p>
+
+<h3 class="font_3"><span><span style="font-weight:normal;"><span style="color:#755EE5;"><span style="font-family:poppins-semibold,poppins,sans-serif;">Links to Other Web Sites</span></span></span></span></h3>
+
+<h3 class="font_3"><span>​</span></h3>
+
+<p class="font_8">Our Service may contain links to third-party web sites or services that are not owned or controlled by Bravo or ExalioDevelopment Inc.</p>
+
+<p class="font_8"><span class="wixGuard">​</span></p>
+
+<p class="font_8">Bravo or ExalioDevelopment Inc. has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third-party web sites or services.</p>
+
+<p class="font_8"><span class="wixGuard">​</span></p>
+
+<p class="font_8">You further acknowledge and agree that Bravo or ExalioDevelopment shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with use of or reliance on any such content, goods or services available on or through any such web sites or services.</p>
+
+<p class="font_8">&nbsp;</p>
+
+<p class="font_8">We strongly advise you to read the terms and conditions and privacy policies of any third-party web sites or services that you visit.</p></div></section><section id="comp-km5n4vdv" class="_3uJnK comp-km5n4vdv-container undefined" data-testid="section-container"><div id="comp-km5n4vdy" class="_1Q9if _3bcaz" data-testid="richTextElement"><p class="font_8">&nbsp;</p>
+
+<p class="font_8">&nbsp;</p>
+
+<p class="font_8"><span><span style="font-family:poppins-semibold,poppins,sans-serif;"><span style="font-weight:normal;"><span style="color:#755EE5;">Termination</span></span></span></span></p>
+
+<h3 class="font_3"><span>​</span></h3>
+
+<p class="font_8">We may terminate or suspend access to our Service immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.</p>
+
+<p class="font_8"><span class="wixGuard">​</span></p>
+
+<p class="font_8">All provisions of the Terms which by their nature should survive termination shall survive termination, including, without limitation, ownership provisions, warranty disclaimers, indemnity and limitations of liability.</p>
+
+<p class="font_8"><span class="wixGuard">​</span></p>
+
+<p class="font_8">We may terminate or suspend your account immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.</p>
+
+<p class="font_8"><span class="wixGuard">​</span></p>
+
+<p class="font_8">Upon termination, your right to use the Service will immediately cease. If you wish to terminate your account, you may simply discontinue using the Service.&nbsp;</p>
+
+<p class="font_8"><span class="wixGuard">​</span></p>
+
+<p class="font_8">All provisions of the Terms which by their nature should survive termination shall survive termination, including, without limitation, ownership provisions, warranty disclaimers, indemnity and limitations of liability.</p>
+
+<h3 class="font_3">&nbsp;</h3>
+
+<h3 class="font_3"><span><span class="wixGuard">​</span></span></h3>
+
+<h3 class="font_3"><span><span style="font-weight:normal;"><span style="font-family:poppins-semibold,poppins,sans-serif;"><span style="color:#755EE5;">Governing Law</span></span></span></span></h3>
+
+<h3 class="font_3"><span><span style="font-weight:normal;"><span style="font-family:poppins-semibold,poppins,sans-serif;"><span style="color:#755EE5;"><span class="wixGuard">​</span></span></span></span></span></h3>
+
+<p class="font_8">These Terms shall be governed and construed in accordance with the laws of Karnataka, without regard to its conflict of law provisions.</p>
+
+<p class="font_8"><span class="wixGuard">​</span></p>
+
+<p class="font_8">Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights. If any provision of these Terms is held to be invalid or unenforceable by a court, the remaining provisions of these Terms will remain in effect. These Terms constitute the entire agreement between us regarding our Service, and supersede and replace any prior agreements we might have between us regarding the Service.</p>
+
+<p class="font_8"><span><span class="wixGuard">​</span></span></p>
+
+<p class="font_8"><span><span class="wixGuard">​</span></span></p>
+
+<h3 class="font_3"><span><span style="font-weight:normal;"><span style="font-family:poppins-semibold,poppins,sans-serif;"><span style="color:#755EE5;">Changes</span></span></span></span></h3>
+
+<p class="font_8">&nbsp;</p>
+
+<p class="font_8">We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material we will try to provide at least 30 days notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.</p>
+
+<p class="font_8"><span class="wixGuard">​</span></p>
+
+<p class="font_8">By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms. If you do not agree to the new terms, please stop using the Service</p>
+<p class="font_8"><span><span class="wixGuard">​</span></span></p>
+
+<h3 class="font_3"><span><span style="color:#755EE5;"><span style="font-weight:normal;"><span style="font-family:poppins-semibold,poppins,sans-serif;">General Terms</span></span></span>​</span></h3>
+
+<h3 class="font_3"><span><span style="color:#755EE5;"><span style="font-weight:normal;"><span style="font-family:poppins-semibold,poppins,sans-serif;"><span class="wixGuard">​</span></span></span></span></span></h3>
+
+<p class="font_8">Reverse Engineering. you will not, directly or indirectly: reverse engineer, decompile, disassemble or otherwise attempt to discover the source code, object code or underlying structure, ideas, know-how or algorithms relevant to the Services or any software, documentation or data related to the Services (“Software”); modify, translate, or make competitive products or works based on the Services or any Software (except to the extent expressly permitted by Bravo or ExalioDevelopment or authorized within the Services); use the Services or any Software for timesharing or service bureau purposes or otherwise for the benefit of a third; or remove any proprietary notices or labels. With respect to any Software that is distributed or provided to you for use on you premises or devices, Bravo or ExalioDevelopment hereby grants you a non-exclusive, non-transferable, non-sublicensable license to use such Software during the term of your Plan only in connection with the Services.</p>
+
+<p class="font_8"><span class="wixGuard">​</span></p>
+
+<p class="font_8">Compliance with Laws.&nbsp; You represent, covenant, and warrant that you will use the Services only in compliance with all applicable laws and regulations. you hereby agree to indemnify and hold harmless Bravo or ExalioDevelopment against any damages, losses, liabilities, settlements and expenses (including without limitation costs and attorneys’ fees) awarded in a final court judgment, in connection with any claim or action that arises from a violation of the foregoing or otherwise from your misuse of Services. Although Bravo or ExalioDevelopment has no obligation to monitor your use of the Services, Bravo or ExalioDevelopment may do so and may prohibit any use of the Services it believes may be (or alleged to be) in violation of the foregoing. If any provision of these Terms of Service is found to be unenforceable or invalid, that provision will be limited or eliminated to the minimum extent necessary so that these Terms of Service will otherwise remain in full force and effect and enforceable. This Agreement is not assignable, transferable or sublicensable by Bravo or ExalioDevelopment except with your prior written consent. you may transfer and assign any of its rights and obligations under these Terms of Service without consent. These Terms of Service the complete and exclusive statement of the mutual understanding of the parties and supersedes and cancels all previous written and oral agreements, communications and other understandings relating to the subject matter of these Terms of Service, and that all waivers and modifications must be in a writing signed by both parties, except as otherwise provided herein. No agency, partnership, joint venture, or employment is created as a result of these Terms of Service and you do not have any authority of any kind to bind Bravo or ExalioDevelopment in any respect whatsoever. In any action or proceeding to enforce rights under these Terms of Service, the prevailing party will be entitled to recover costs and attorneys’ fees. All notices under these Terms of Service will be in writing and will be deemed to have been duly given when received, if personally delivered; when receipt is electronically confirmed, if transmitted by facsimile or e-mail; the day after it is sent, if sent for next day delivery by recognized overnight delivery service; and upon receipt, if sent by certified or registered mail, return receipt requested. This Agreement shall be governed by the laws of Karnataka without regard to its conflict of laws provisions Any claim, dispute or controversy between the Parties will be subject to the exclusive jurisdiction and venue of the courts located in Karnataka, and each party hereby irrevocably submits to the personal jurisdiction of such courts and waives any jurisdictional, venue, or inconvenient forum objections to such courts.</p>
+
+</div></section>
+   <!-- ====== Footer Section Start -->
+   <footer
+      class="wow fadeInUp relative z-10 bg-black pt-20 lg:pt-[120px]"
+      data-wow-delay=".15s"
+    >
+      <div class="container">
+        <div class="-mx-4 flex flex-wrap">
+          <div class="w-full px-4 sm:w-1/2 md:w-1/2 lg:w-4/12 xl:w-3/12">
+            <div class="mb-10 w-full">
+              <a
+                href="javascript:void(0)"
+                class="mb-6 inline-block max-w-[160px]"
+              >
+                <img
+                  src="{{url_for('static',filename='src/assets/images/logo/logo-white.svg')}}"
+                  alt="logo"
+                  class="max-w-full"
+                />
+              </a>
+              <p class="mb-7 text-base text-[#f3f4fe]">
+                We create digital experiences for brands and companies by using
+                technology.
+              </p>
+              
+            </div>
+          </div>
+          
+          <div class="w-full px-4 sm:w-1/2 md:w-1/2 lg:w-3/12 xl:w-2/12">
+            <div class="mb-10 w-full">
+              <h4 class="mb-9 text-lg font-semibold text-white">Features</h4>
+              <ul>
+                
+                <li>
+                  <a
+                    href="privacy"
+                    class="mb-2 inline-block text-base leading-loose text-[#f3f4fe] hover:text-primary"
+                  >
+                    Privacy policy
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="Tos"
+                    class="mb-2 inline-block text-base leading-loose text-[#f3f4fe] hover:text-primary"
+                  >
+                    Terms of Service
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="Tos"
+                    class="mb-2 inline-block text-base leading-loose text-[#f3f4fe] hover:text-primary"
+                  >
+                    Refund policy
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          
+        </div>
+      </div>
+
+      <div class="mt-12 border-t border-opacity-40 py-8 lg:mt-[60px]">
+        <div class="container">
+          <div class="-mx-4 flex flex-wrap">
+            <div class="w-full px-4 md:w-2/3 lg:w-1/2">
+              <div class="my-1">
+                <div
+                  class="-mx-3 flex items-center justify-center md:justify-start"
+                >
+                <a
+                href="privacy"
+                class="px-3 text-base text-[#f3f4fe] hover:text-primary"
+              >
+                Privacy policy
+              </a>
+                  
+                  <a
+                    href="Tos"
+                    class="px-3 text-base text-[#f3f4fe] hover:text-primary"
+                  >
+                    Terms of service
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="w-full px-4 md:w-1/3 lg:w-1/2">
+              <div class="my-1 flex justify-center md:justify-end">
+                <p class="text-base text-[#f3f4fe]">
+                  Designed and Developed by
+                  <a                   
+                  >
+                    ExalioDevelopment
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <span class="absolute left-0 top-0 z-[-1]">
+          <img src="assets/images/footer/shape-1.svg" alt="" />
+        </span>
+
+        <span class="absolute bottom-0 right-0 z-[-1]">
+          <img src="assets/images/footer/shape-3.svg" alt="" />
+        </span>
+
+        <span class="absolute top-0 right-0 z-[-1]">
+          <svg
+            width="102"
+            height="102"
+            viewBox="0 0 102 102"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1.8667 33.1956C2.89765 33.1956 3.7334 34.0318 3.7334 35.0633C3.7334 36.0947 2.89765 36.9309 1.8667 36.9309C0.835744 36.9309 4.50645e-08 36.0947 0 35.0633C-4.50645e-08 34.0318 0.835744 33.1956 1.8667 33.1956Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M18.2939 33.1956C19.3249 33.1956 20.1606 34.0318 20.1606 35.0633C20.1606 36.0947 19.3249 36.9309 18.2939 36.9309C17.263 36.9309 16.4272 36.0947 16.4272 35.0633C16.4272 34.0318 17.263 33.1956 18.2939 33.1956Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M34.7209 33.195C35.7519 33.195 36.5876 34.0311 36.5876 35.0626C36.5876 36.0941 35.7519 36.9303 34.7209 36.9303C33.69 36.9303 32.8542 36.0941 32.8542 35.0626C32.8542 34.0311 33.69 33.195 34.7209 33.195Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M50.9341 33.195C51.965 33.195 52.8008 34.0311 52.8008 35.0626C52.8008 36.0941 51.965 36.9303 50.9341 36.9303C49.9031 36.9303 49.0674 36.0941 49.0674 35.0626C49.0674 34.0311 49.9031 33.195 50.9341 33.195Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M1.8667 16.7605C2.89765 16.7605 3.7334 17.5966 3.7334 18.6281C3.7334 19.6596 2.89765 20.4957 1.8667 20.4957C0.835744 20.4957 4.50645e-08 19.6596 0 18.6281C-4.50645e-08 17.5966 0.835744 16.7605 1.8667 16.7605Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M18.2939 16.7605C19.3249 16.7605 20.1606 17.5966 20.1606 18.6281C20.1606 19.6596 19.3249 20.4957 18.2939 20.4957C17.263 20.4957 16.4272 19.6596 16.4272 18.6281C16.4272 17.5966 17.263 16.7605 18.2939 16.7605Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M34.7209 16.7605C35.7519 16.7605 36.5876 17.5966 36.5876 18.6281C36.5876 19.6596 35.7519 20.4957 34.7209 20.4957C33.69 20.4957 32.8542 19.6596 32.8542 18.6281C32.8542 17.5966 33.69 16.7605 34.7209 16.7605Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M50.9341 16.7605C51.965 16.7605 52.8008 17.5966 52.8008 18.6281C52.8008 19.6596 51.965 20.4957 50.9341 20.4957C49.9031 20.4957 49.0674 19.6596 49.0674 18.6281C49.0674 17.5966 49.9031 16.7605 50.9341 16.7605Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M1.8667 0.324951C2.89765 0.324951 3.7334 1.16115 3.7334 2.19261C3.7334 3.22408 2.89765 4.06024 1.8667 4.06024C0.835744 4.06024 4.50645e-08 3.22408 0 2.19261C-4.50645e-08 1.16115 0.835744 0.324951 1.8667 0.324951Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M18.2939 0.324951C19.3249 0.324951 20.1606 1.16115 20.1606 2.19261C20.1606 3.22408 19.3249 4.06024 18.2939 4.06024C17.263 4.06024 16.4272 3.22408 16.4272 2.19261C16.4272 1.16115 17.263 0.324951 18.2939 0.324951Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M34.7209 0.325302C35.7519 0.325302 36.5876 1.16147 36.5876 2.19293C36.5876 3.2244 35.7519 4.06056 34.7209 4.06056C33.69 4.06056 32.8542 3.2244 32.8542 2.19293C32.8542 1.16147 33.69 0.325302 34.7209 0.325302Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M50.9341 0.325302C51.965 0.325302 52.8008 1.16147 52.8008 2.19293C52.8008 3.2244 51.965 4.06056 50.9341 4.06056C49.9031 4.06056 49.0674 3.2244 49.0674 2.19293C49.0674 1.16147 49.9031 0.325302 50.9341 0.325302Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M66.9037 33.1956C67.9346 33.1956 68.7704 34.0318 68.7704 35.0633C68.7704 36.0947 67.9346 36.9309 66.9037 36.9309C65.8727 36.9309 65.037 36.0947 65.037 35.0633C65.037 34.0318 65.8727 33.1956 66.9037 33.1956Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M83.3307 33.1956C84.3616 33.1956 85.1974 34.0318 85.1974 35.0633C85.1974 36.0947 84.3616 36.9309 83.3307 36.9309C82.2997 36.9309 81.464 36.0947 81.464 35.0633C81.464 34.0318 82.2997 33.1956 83.3307 33.1956Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M99.7576 33.1956C100.789 33.1956 101.624 34.0318 101.624 35.0633C101.624 36.0947 100.789 36.9309 99.7576 36.9309C98.7266 36.9309 97.8909 36.0947 97.8909 35.0633C97.8909 34.0318 98.7266 33.1956 99.7576 33.1956Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M66.9037 16.7605C67.9346 16.7605 68.7704 17.5966 68.7704 18.6281C68.7704 19.6596 67.9346 20.4957 66.9037 20.4957C65.8727 20.4957 65.037 19.6596 65.037 18.6281C65.037 17.5966 65.8727 16.7605 66.9037 16.7605Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M83.3307 16.7605C84.3616 16.7605 85.1974 17.5966 85.1974 18.6281C85.1974 19.6596 84.3616 20.4957 83.3307 20.4957C82.2997 20.4957 81.464 19.6596 81.464 18.6281C81.464 17.5966 82.2997 16.7605 83.3307 16.7605Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M99.7576 16.7605C100.789 16.7605 101.624 17.5966 101.624 18.6281C101.624 19.6596 100.789 20.4957 99.7576 20.4957C98.7266 20.4957 97.8909 19.6596 97.8909 18.6281C97.8909 17.5966 98.7266 16.7605 99.7576 16.7605Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M66.9037 0.324966C67.9346 0.324966 68.7704 1.16115 68.7704 2.19261C68.7704 3.22408 67.9346 4.06024 66.9037 4.06024C65.8727 4.06024 65.037 3.22408 65.037 2.19261C65.037 1.16115 65.8727 0.324966 66.9037 0.324966Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M83.3307 0.324951C84.3616 0.324951 85.1974 1.16115 85.1974 2.19261C85.1974 3.22408 84.3616 4.06024 83.3307 4.06024C82.2997 4.06024 81.464 3.22408 81.464 2.19261C81.464 1.16115 82.2997 0.324951 83.3307 0.324951Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M99.7576 0.324951C100.789 0.324951 101.624 1.16115 101.624 2.19261C101.624 3.22408 100.789 4.06024 99.7576 4.06024C98.7266 4.06024 97.8909 3.22408 97.8909 2.19261C97.8909 1.16115 98.7266 0.324951 99.7576 0.324951Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M1.8667 82.2029C2.89765 82.2029 3.7334 83.039 3.7334 84.0705C3.7334 85.102 2.89765 85.9382 1.8667 85.9382C0.835744 85.9382 4.50645e-08 85.102 0 84.0705C-4.50645e-08 83.039 0.835744 82.2029 1.8667 82.2029Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M18.2939 82.2029C19.3249 82.2029 20.1606 83.039 20.1606 84.0705C20.1606 85.102 19.3249 85.9382 18.2939 85.9382C17.263 85.9382 16.4272 85.102 16.4272 84.0705C16.4272 83.039 17.263 82.2029 18.2939 82.2029Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M34.7209 82.2026C35.7519 82.2026 36.5876 83.0387 36.5876 84.0702C36.5876 85.1017 35.7519 85.9378 34.7209 85.9378C33.69 85.9378 32.8542 85.1017 32.8542 84.0702C32.8542 83.0387 33.69 82.2026 34.7209 82.2026Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M50.9341 82.2026C51.965 82.2026 52.8008 83.0387 52.8008 84.0702C52.8008 85.1017 51.965 85.9378 50.9341 85.9378C49.9031 85.9378 49.0674 85.1017 49.0674 84.0702C49.0674 83.0387 49.9031 82.2026 50.9341 82.2026Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M1.8667 65.7677C2.89765 65.7677 3.7334 66.6039 3.7334 67.6353C3.7334 68.6668 2.89765 69.503 1.8667 69.503C0.835744 69.503 4.50645e-08 68.6668 0 67.6353C-4.50645e-08 66.6039 0.835744 65.7677 1.8667 65.7677Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M18.2939 65.7677C19.3249 65.7677 20.1606 66.6039 20.1606 67.6353C20.1606 68.6668 19.3249 69.503 18.2939 69.503C17.263 69.503 16.4272 68.6668 16.4272 67.6353C16.4272 66.6039 17.263 65.7677 18.2939 65.7677Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M34.7209 65.7674C35.7519 65.7674 36.5876 66.6036 36.5876 67.635C36.5876 68.6665 35.7519 69.5027 34.7209 69.5027C33.69 69.5027 32.8542 68.6665 32.8542 67.635C32.8542 66.6036 33.69 65.7674 34.7209 65.7674Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M50.9341 65.7674C51.965 65.7674 52.8008 66.6036 52.8008 67.635C52.8008 68.6665 51.965 69.5027 50.9341 69.5027C49.9031 69.5027 49.0674 68.6665 49.0674 67.635C49.0674 66.6036 49.9031 65.7674 50.9341 65.7674Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M1.8667 98.2644C2.89765 98.2644 3.7334 99.1005 3.7334 100.132C3.7334 101.163 2.89765 102 1.8667 102C0.835744 102 4.50645e-08 101.163 0 100.132C-4.50645e-08 99.1005 0.835744 98.2644 1.8667 98.2644Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M1.8667 49.3322C2.89765 49.3322 3.7334 50.1684 3.7334 51.1998C3.7334 52.2313 2.89765 53.0675 1.8667 53.0675C0.835744 53.0675 4.50645e-08 52.2313 0 51.1998C-4.50645e-08 50.1684 0.835744 49.3322 1.8667 49.3322Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M18.2939 98.2644C19.3249 98.2644 20.1606 99.1005 20.1606 100.132C20.1606 101.163 19.3249 102 18.2939 102C17.263 102 16.4272 101.163 16.4272 100.132C16.4272 99.1005 17.263 98.2644 18.2939 98.2644Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M18.2939 49.3322C19.3249 49.3322 20.1606 50.1684 20.1606 51.1998C20.1606 52.2313 19.3249 53.0675 18.2939 53.0675C17.263 53.0675 16.4272 52.2313 16.4272 51.1998C16.4272 50.1684 17.263 49.3322 18.2939 49.3322Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M34.7209 98.2647C35.7519 98.2647 36.5876 99.1008 36.5876 100.132C36.5876 101.164 35.7519 102 34.7209 102C33.69 102 32.8542 101.164 32.8542 100.132C32.8542 99.1008 33.69 98.2647 34.7209 98.2647Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M50.9341 98.2647C51.965 98.2647 52.8008 99.1008 52.8008 100.132C52.8008 101.164 51.965 102 50.9341 102C49.9031 102 49.0674 101.164 49.0674 100.132C49.0674 99.1008 49.9031 98.2647 50.9341 98.2647Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M34.7209 49.3326C35.7519 49.3326 36.5876 50.1687 36.5876 51.2002C36.5876 52.2317 35.7519 53.0678 34.7209 53.0678C33.69 53.0678 32.8542 52.2317 32.8542 51.2002C32.8542 50.1687 33.69 49.3326 34.7209 49.3326Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M50.9341 49.3326C51.965 49.3326 52.8008 50.1687 52.8008 51.2002C52.8008 52.2317 51.965 53.0678 50.9341 53.0678C49.9031 53.0678 49.0674 52.2317 49.0674 51.2002C49.0674 50.1687 49.9031 49.3326 50.9341 49.3326Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M66.9037 82.2029C67.9346 82.2029 68.7704 83.0391 68.7704 84.0705C68.7704 85.102 67.9346 85.9382 66.9037 85.9382C65.8727 85.9382 65.037 85.102 65.037 84.0705C65.037 83.0391 65.8727 82.2029 66.9037 82.2029Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M83.3307 82.2029C84.3616 82.2029 85.1974 83.0391 85.1974 84.0705C85.1974 85.102 84.3616 85.9382 83.3307 85.9382C82.2997 85.9382 81.464 85.102 81.464 84.0705C81.464 83.0391 82.2997 82.2029 83.3307 82.2029Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M99.7576 82.2029C100.789 82.2029 101.624 83.039 101.624 84.0705C101.624 85.102 100.789 85.9382 99.7576 85.9382C98.7266 85.9382 97.8909 85.102 97.8909 84.0705C97.8909 83.039 98.7266 82.2029 99.7576 82.2029Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M66.9037 65.7674C67.9346 65.7674 68.7704 66.6036 68.7704 67.635C68.7704 68.6665 67.9346 69.5027 66.9037 69.5027C65.8727 69.5027 65.037 68.6665 65.037 67.635C65.037 66.6036 65.8727 65.7674 66.9037 65.7674Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M83.3307 65.7677C84.3616 65.7677 85.1974 66.6039 85.1974 67.6353C85.1974 68.6668 84.3616 69.503 83.3307 69.503C82.2997 69.503 81.464 68.6668 81.464 67.6353C81.464 66.6039 82.2997 65.7677 83.3307 65.7677Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M99.7576 65.7677C100.789 65.7677 101.624 66.6039 101.624 67.6353C101.624 68.6668 100.789 69.503 99.7576 69.503C98.7266 69.503 97.8909 68.6668 97.8909 67.6353C97.8909 66.6039 98.7266 65.7677 99.7576 65.7677Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M66.9037 98.2644C67.9346 98.2644 68.7704 99.1005 68.7704 100.132C68.7704 101.163 67.9346 102 66.9037 102C65.8727 102 65.037 101.163 65.037 100.132C65.037 99.1005 65.8727 98.2644 66.9037 98.2644Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M66.9037 49.3322C67.9346 49.3322 68.7704 50.1684 68.7704 51.1998C68.7704 52.2313 67.9346 53.0675 66.9037 53.0675C65.8727 53.0675 65.037 52.2313 65.037 51.1998C65.037 50.1684 65.8727 49.3322 66.9037 49.3322Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M83.3307 98.2644C84.3616 98.2644 85.1974 99.1005 85.1974 100.132C85.1974 101.163 84.3616 102 83.3307 102C82.2997 102 81.464 101.163 81.464 100.132C81.464 99.1005 82.2997 98.2644 83.3307 98.2644Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M83.3307 49.3322C84.3616 49.3322 85.1974 50.1684 85.1974 51.1998C85.1974 52.2313 84.3616 53.0675 83.3307 53.0675C82.2997 53.0675 81.464 52.2313 81.464 51.1998C81.464 50.1684 82.2997 49.3322 83.3307 49.3322Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M99.7576 98.2644C100.789 98.2644 101.624 99.1005 101.624 100.132C101.624 101.163 100.789 102 99.7576 102C98.7266 102 97.8909 101.163 97.8909 100.132C97.8909 99.1005 98.7266 98.2644 99.7576 98.2644Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+            <path
+              d="M99.7576 49.3322C100.789 49.3322 101.624 50.1684 101.624 51.1998C101.624 52.2313 100.789 53.0675 99.7576 53.0675C98.7266 53.0675 97.8909 52.2313 97.8909 51.1998C97.8909 50.1684 98.7266 49.3322 99.7576 49.3322Z"
+              fill="white"
+              fill-opacity="0.08"
+            ></path>
+          </svg>
+        </span>
+      </div>
+    </footer>
+ <!-- ====== Footer Section End -->
+
+ <!-- ====== Back To Top Start -->
+ <a
+   href="javascript:void(0)"
+   class="back-to-top fixed bottom-8 right-8 left-auto z-[999] hidden h-10 w-10 items-center justify-center rounded-md bg-primary text-white shadow-md transition duration-300 ease-in-out hover:bg-dark"
+ >
+   <span
+     class="mt-[6px] h-3 w-3 rotate-45 border-t border-l border-white"
+   ></span>
+ </a>
+ <!-- ====== Back To Top End -->
+
+ <!-- ====== All Scripts -->
+ <script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -24,4 +24,5 @@ app.config[
 ] = f"postgresql://{db_user}:{db_password}@/{db_name}?host=/cloudsql/{db_connection_name}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SECRET_KEY"] = "thisisasecretkey"
+
 db = SQLAlchemy(app)

@@ -13,3 +13,4 @@ class LoginModel(db.Model, UserMixin):
     downloads = db.Column(db.INTEGER(), nullable=False)
     progress = db.Column(db.String(80), nullable=False)
     file_url = db.Column(db.String(200), nullable=True)
+    is_verified = db.Column(db.BOOLEAN(), nullable=True)
