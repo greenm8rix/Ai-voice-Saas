@@ -31,7 +31,7 @@ def create_folder(
 
 def test(username):
     j = gcs.list_folder(
-        bucket_folder=username,
+        bucket_folder=(username + "/"),
         as_blob=False,  # If False : return as name
         include_self=False,  # If True : also return bucket_folder
         get_file=True,  # Get files in a list or not
@@ -39,7 +39,7 @@ def test(username):
         all_file=False,  # If True : Will get all files from folder and sub-folder(s)
     )
     bucket = storage_client.get_bucket("user_files_for_bravo")
-
+    print(j)
     l = []  # your bucket name
     for i in j:
         blob = bucket.blob(f"{i}")

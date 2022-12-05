@@ -3,9 +3,10 @@ from moviepy.editor import concatenate_audioclips, AudioFileClip
 from config import db, app
 from model import LoginModel
 from storage import create_folder
+import threading
 
 
-def concatenate_audio_moviepy(number, jobs, username, name):
+def concatenate_audio_moviepy(number, threads, username, name):
     with app.app_context():
         user_data = (
             db.session.query(LoginModel).filter(LoginModel.username == name).first()
@@ -13,9 +14,10 @@ def concatenate_audio_moviepy(number, jobs, username, name):
         output_path = f"/tmp/{username}.mp3"
         user_data.progress = "in_progress"
         db.session.commit()
-        print("waiting for queue to complete", jobs.qsize(), "tasks")
-        jobs.join()
-        print("all done")
+        for x in threads:
+            x.join()
+        for x in threads:
+            x.join()
         dirs = os.listdir("/tmp")
         if len(dirs) > 0:
             """Concatenates several audio files into one audio file using MoviePy
@@ -43,4 +45,4 @@ def concatenate_audio_moviepy(number, jobs, username, name):
                 for x in dirs:
                     if j + ".mp3" == x:
 
-                        os.remove(f"tmp/{x}")
+                        os.remove(f"/tmp/{x}")

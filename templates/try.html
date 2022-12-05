@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>About | Play Tailwind</title>
+    <title>Try Now | Bravo</title>
     <link
       rel="shortcut icon"
       href="{{url_for('static',filename='src/assets/images/favicon.png')}}"
@@ -202,9 +202,10 @@
           </svg>
         </span>
       </div>
+      
     </div>
     <!-- ====== Banner Section End -->
-
+    
     <!-- ====== About Section Start -->
     <section
       id="about"
@@ -238,6 +239,14 @@
                             </a>
                           </div>
                           <div>
+                            <div class="dropdown">
+                              <span class="mb-5 inline-block bg-primary py-2 px-5 text-sm font-medium text-white" >Hints</span>
+                              <div class="dropdown-content">
+                                <p>Prompt Engineering 
+                                  Bravo is capable of "prompt-engineering" in that tone and prosody is affected by the emotions inflected in the words fed to the program. For example, prompting the model with "[I am so angry,] I went to the park and threw a ball" will result in it outputting "I went to the park and threw the ball" with an angry tone.</p>
+                              </div>
+                            </div>
+                            
                           <form id="form" action = "" method = "POST" enctype = "multipart/form-data" >
                             {{ form.hidden_tag() }}
                             
@@ -300,9 +309,9 @@
                                   </path>
                                 </g>
                               </svg>
-                            </div>
-                              </button>
+                            
                             </button>
+                            </div>
                           </form>
                         </div>
                           <div>
@@ -925,7 +934,7 @@
     <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-489F54ZEJB"></script>
 <script>
-
+document.getElementById("Custom_Voice").disabled = true;
   $('textarea').keyup(function() {
     
   var characterCount = $(this).val().length,

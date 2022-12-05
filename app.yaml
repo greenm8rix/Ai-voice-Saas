@@ -1,6 +1,6 @@
 runtime: python
 env: flex
-instance_class: F2
+instance_class: F1
 runtime_config:
   python_version: 3.7
 env_variables:
@@ -8,6 +8,9 @@ env_variables:
   CLOUD_SQL_PASSWORD: "&2Pdd4zAp[>.8QDa"
   CLOUD_SQL_DATABASE_NAME: bravo_ai
   CLOUD_SQL_CONNECTION_NAME: bravo-ai-voice:asia-south1:bravo-instace
+  STRIPE_PUBLISHABLE_KEY:pk_test_51M6WnuSFFYmekMFSPTqnSAPsasv6iK6YV7rjXIlF0bMWU0JynbJGH3p6n5PajptzEslW9sBQ1uGs2qZ3nAcZ8dCa00IsRAv1ox
+  STRIPE_SECRET_KEY:sk_test_51M6WnuSFFYmekMFS1UFwEnIelSNYNFe7rHFZk7KdhMxR5qCHpeivJSkFkW9LjYlhGkLojbFo7dyKnYDFHbocDJjt00edqZVYOM
+  STRIPE_PRICE_ID:price_1MBcDTSFFYmekMFSzBM49k45
 entrypoint: ./run.sh
 automatic_scaling:
   min_num_instances: 1

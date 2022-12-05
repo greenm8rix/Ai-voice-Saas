@@ -20,7 +20,6 @@ from flask_restful import Resource, Api
 import requests
 from calculator import get_subscription_tier
 from config import db, app
-import concurrent
 from flask_login import (
     UserMixin,
     login_user,
@@ -54,6 +53,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "signin"
 from google.cloud import storage
+import stripe
 
 jobs = Queue()
 storage_client = storage.Client()
@@ -63,7 +63,8 @@ voices_available = (
     "deniro",
     "freeman",
     "halle",
-    " lj" "pat2",
+    " lj",
+    "pat2",
     "snakes",
     "tom",
     "train_daws",
@@ -77,7 +78,7 @@ voices_available = (
     "geralt",
     "jlaw",
     "mol",
-    " pat",
+    "pat",
     "rainbow",
     "tim_reynolds",
     "train_atkins",
@@ -86,10 +87,13 @@ voices_available = (
     "train_kennard",
     "train_mouse",
     "william",
-    "random",
-    " custom_voice",
 )
 quality_available = ("ultra_fast", "fast", "standard", "high_quality")
+stripe_keys = {
+    "secret_key": os.environ["STRIPE_SECRET_KEY"],
+    "publishable_key": os.environ["STRIPE_PUBLISHABLE_KEY"],
+}
+stripe.api_key = stripe_keys["secret_key"]
 
 
 @login_manager.user_loader
@@ -153,7 +157,7 @@ class RegisterForm(FlaskForm):
 
 class LoginForm(FlaskForm):
     username = StringField(
-        validators=[InputRequired(), Length(min=4, max=20)],
+        validators=[InputRequired(), Length(min=4, max=40)],
         render_kw={
             "placeholder": "Username",
             "class": "bordder-[#E9EDF4] w-full rounded-md border bg-[#FCFDFE] py-3 px-5 text-base text-body-color placeholder-[#ACB6BE] outline-none transition focus:border-primary focus-visible:shadow-none",
@@ -230,26 +234,26 @@ class ValidateForm(FlaskForm):
 def heavy_func(
     text_file, voice_file, quality="ultra_fast", calculation=0, custom_voice=None
 ):
-    # os.environ["REPLICATE_API_TOKEN"] = "b20bf20c9a8f6d4b5cf4c31cfe56f7647e95654a"
-    # model = replicate.models.get("afiaka87/tortoise-tts")
-    # version = model.versions.get(
-    #     "e9658de4b325863c4fcdc12d94bb7c9b54cbfe351b7ca1b36860008172b91c71"
-    # )
-    # if custom_voice == None:
-    #     output = version.predict(
-    #         text=text_file, voice_a=voice_file, preset=quality, cvvp_amount=calculation
-    #     )
-    # else:
-    #     output = version.predict(
-    #         text=text_file,
-    #         voice_a=voice_file,
-    #         preset=quality,
-    #         cvvp_amount=calculation,
-    #         custom_voice=custom_voice,
-    #     )
+    os.environ["REPLICATE_API_TOKEN"] = "32e56e6e80146f4301c4dd5dd7c50f9f6d941913"
+    model = replicate.models.get("afiaka87/tortoise-tts")
+    version = model.versions.get(
+        "e9658de4b325863c4fcdc12d94bb7c9b54cbfe351b7ca1b36860008172b91c71"
+    )
+    if custom_voice == None:
+        output = version.predict(
+            text=text_file, voice_a=voice_file, preset=quality, cvvp_amount=calculation
+        )
+    else:
+        output = version.predict(
+            text=text_file,
+            voice_a=voice_file,
+            preset=quality,
+            cvvp_amount=calculation,
+            custom_voice=custom_voice,
+        )
     print(text_file, voice_file, quality, calculation, custom_voice)
     AiVoiceResource.user_download(
-        "https://replicate.delivery/pbxt/sxgbNlGz6qJcHxinpo6l5ttArsrWgcfCnRYgmvhRvqeYEmBQA/tortoise.mp3",
+        output,
         text_file,
     )
 
@@ -316,7 +320,7 @@ class AiVoiceResource(Resource):
             max_character_count, max_downloads = get_subscription_tier(
                 user_data.subscription_tier
             )
-            if user_data.downloads > max_downloads:
+            if user_data.downloads >= max_downloads:
                 return redirect(url_for("pricing"))
         form = TryNow()
         if current_user.is_authenticated and current_user.is_verified == True:
@@ -333,6 +337,13 @@ class AiVoiceResource(Resource):
                 .filter(LoginModel.username == form.username.data)
                 .first()
             )
+            if not user:
+                user = (
+                    db.session.query(LoginModel)
+                    .filter(LoginModel.email == form.username.data)
+                    .first()
+                )
+
             if user:
                 if user.is_verified == True:
                     if bcrypt.check_password_hash(user.password, form.password.data):
@@ -345,6 +356,7 @@ class AiVoiceResource(Resource):
                 else:
                     current_otp = sendEmailVerificationRequest(receiver=user.email)
                     session["current_otp"] = current_otp
+                    session["username"] = form.username.data
                     return redirect(url_for("validate"))
             else:
                 return redirect(url_for("signup"))
@@ -357,14 +369,30 @@ class AiVoiceResource(Resource):
         if form.validate_on_submit():
             current_user_otp = session["current_otp"]
             user_otp = form.Otp.data
-            try:
+            username = session["username"]
+            user = (
+                db.session.query(LoginModel)
+                .filter(LoginModel.username == username)
+                .first()
+            )
+            if not user:
+                user = (
+                    db.session.query(LoginModel)
+                    .filter(LoginModel.email == username)
+                    .first()
+                )
+
+            if user:
                 if int(current_user_otp) == int(user_otp):
+                    user.is_verified = True
                     db.session.commit()
                     return redirect(url_for("signin"))
                 else:
                     return redirect(url_for("validate"))
-            except:
-                return redirect(url_for("validate"))
+                # except:
+                #     return redirect(url_for("validate"))
+            else:
+                redirect(url_for("signup"))
         return render_template("validate.html", form=form)
 
     @app.route("/signup", methods=["GET", "POST"])
@@ -385,6 +413,7 @@ class AiVoiceResource(Resource):
             )
             current_otp = sendEmailVerificationRequest(receiver=form.email.data)
             session["current_otp"] = current_otp
+            session["username"] = form.username.data
 
             db.session.add(new_user)
             db.session.commit()
@@ -409,6 +438,39 @@ class AiVoiceResource(Resource):
     @app.route("/Examples")
     def example():
         return render_template("examples.html")
+
+    @app.route("/config")
+    def get_publishable_key():
+        stripe_config = {"publicKey": stripe_keys["publishable_key"]}
+        return jsonify(stripe_config)
+
+    @app.route("/create-checkout-session")
+    def create_checkout_session():
+        domain_url = "http://localhost:5000/"
+        stripe.api_key = stripe_keys["secret_key"]
+
+        try:
+            checkout_session = stripe.checkout.Session.create(
+                # you should get the user id here and pass it along as 'client_reference_id'
+                #
+                # this will allow you to associate the Stripe session with
+                # the user saved in your database
+                #
+                # example: client_reference_id=user.id,
+                success_url=domain_url + "success?session_id={CHECKOUT_SESSION_ID}",
+                cancel_url=domain_url + "cancel",
+                payment_method_types=["card"],
+                mode="subscription",
+                line_items=[
+                    {
+                        "price": stripe_keys["price_id"],
+                        "quantity": 1,
+                    }
+                ],
+            )
+            return jsonify({"sessionId": checkout_session["id"]})
+        except Exception as e:
+            return jsonify(error=str(e)), 403
 
     @app.route("/try", methods=["POST"])
     @login_required
@@ -442,7 +504,7 @@ class AiVoiceResource(Resource):
                     character_count += 1
                 if character_count > max_character_count:
                     return redirect(url_for("pricing"))
-                if user_data.downloads > max_downloads:
+                if user_data.downloads >= max_downloads:
                     return redirect(url_for("pricing"))
 
                 splitting_into_smaller = tokenizer.tokenize(text_file)
@@ -451,25 +513,28 @@ class AiVoiceResource(Resource):
                 for i in splitting_into_smaller:
                     normal_string = "".join(ch for ch in i if ch.isalnum())
                     number.append(normal_string)
-                    jobs.put(
-                        heavy_func(
-                            i,
-                            voice_file,
-                            quality=voice_quality,
-                            calculation=calculation,
-                            custom_voice=custom_voices,
-                        )
+                    # jobs.put(
+                    #     heavy_func(
+                    #         i,
+                    #         voice_file,
+                    #         quality=voice_quality,
+                    #         calculation=calculation,
+                    #         custom_voice=custom_voices,
+                    #     )
+                    # )
+                    j = threading.Thread(
+                        target=heavy_func,
+                        args=(i, voice_file, voice_quality, calculation, custom_voices),
                     )
+                    threads.append(j)
 
-                for i in range(3):
-                    worker = threading.Thread(target=do_stuff, args=(jobs,))
-                    threads.append(worker)
-                    worker.start()
+                for x in threads:
+                    x.start()
                 file_name = user_data.username + str(user_data.downloads)
                 username = user_data.username
                 threading.Thread(
                     target=concatenate_audio_moviepy,
-                    args=(number, jobs, file_name, username),
+                    args=(number, threads, file_name, username),
                 ).start()
                 user_data.downloads += 1
                 db.session.commit()
