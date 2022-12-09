@@ -1,4 +1,5 @@
 import json
+from random import randint
 import threading
 from time import sleep
 import time
@@ -15,6 +16,7 @@ from flask import (
     url_for,
     session,
 )
+from werkzeug.utils import secure_filename
 import replicate
 from flask_restful import Resource, Api
 import requests
@@ -40,7 +42,7 @@ from wtforms import (
 )
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
-from model import LoginModel
+from model import LoginModel, products, StripeCustomer
 import nltk.data
 from audiojoiner import concatenate_audio_moviepy
 from queue import Queue
@@ -63,15 +65,15 @@ voices_available = (
     "deniro",
     "freeman",
     "halle",
-    " lj",
+    "lj",
     "pat2",
     "snakes",
     "tom",
     "train_daws",
     "train_dreams",
     "train_grace",
-    " train_lescault",
-    " weaver",
+    "train_lescault",
+    "weaver",
     "applejack",
     "daniel",
     "emma",
@@ -88,10 +90,18 @@ voices_available = (
     "train_mouse",
     "william",
 )
-quality_available = ("ultra_fast", "fast", "standard", "high_quality")
+quality_available = ("ultra_fast", "fast", "standard")
+secret_key = os.environ.get("STRIPE_SECRET_KEY")
+publishable_key = os.environ.get("STRIPE_PUBLISHABLE_KEY")
+price_id = os.environ.get("STRIPE_PRICE_ID")
+price_id1 = os.environ.get("STRIPE_PRICE_ID1")
+endpoint_secret = os.environ.get("STRIPE_ENDPOINT_SECRET")
 stripe_keys = {
-    "secret_key": os.environ["STRIPE_SECRET_KEY"],
-    "publishable_key": os.environ["STRIPE_PUBLISHABLE_KEY"],
+    "secret_key": secret_key,
+    "publishable_key": publishable_key,
+    "price_id": price_id,
+    "endpoint_secret": endpoint_secret,
+    "price_id1": price_id1,
 }
 stripe.api_key = stripe_keys["secret_key"]
 
@@ -231,17 +241,31 @@ class ValidateForm(FlaskForm):
     )
 
 
+class accountform(FlaskForm):
+
+    submit = SubmitField(
+        "Manage Billing",
+        render_kw={
+            "class": "inline-flex items-center justify-center rounded-lg bg-blue py-4 px-6 text-center text-base font-medium text-dark transition duration-300 ease-in-out hover:text-primary hover:shadow-lg sm:px-10"
+        },
+    )
+
+
 def heavy_func(
     text_file, voice_file, quality="ultra_fast", calculation=0, custom_voice=None
 ):
-    os.environ["REPLICATE_API_TOKEN"] = "32e56e6e80146f4301c4dd5dd7c50f9f6d941913"
+    os.environ["REPLICATE_API_TOKEN"]
     model = replicate.models.get("afiaka87/tortoise-tts")
     version = model.versions.get(
         "e9658de4b325863c4fcdc12d94bb7c9b54cbfe351b7ca1b36860008172b91c71"
     )
     if custom_voice == None:
         output = version.predict(
-            text=text_file, voice_a=voice_file, preset=quality, cvvp_amount=calculation
+            text=text_file,
+            voice_a=voice_file,
+            preset=quality,
+            cvvp_amount=calculation,
+            seed=4532,
         )
     else:
         output = version.predict(
@@ -250,8 +274,8 @@ def heavy_func(
             preset=quality,
             cvvp_amount=calculation,
             custom_voice=custom_voice,
+            seed=4532,
         )
-    print(text_file, voice_file, quality, calculation, custom_voice)
     AiVoiceResource.user_download(
         output,
         text_file,
@@ -288,6 +312,10 @@ class AiVoiceResource(Resource):
     def Tos():
         return render_template("Tos.html")
 
+    @app.route("/success")
+    def success():
+        return render_template("success.html")
+
     @app.route("/user_download")
     def user_download(Url, text_file):
         normal_string = "".join(ch for ch in text_file if ch.isalnum())
@@ -306,6 +334,9 @@ class AiVoiceResource(Resource):
     @app.route("/")
     @app.route("/index")
     def index():
+        if current_user.is_authenticated:
+            context = current_user.subscription_tier
+            return render_template("index.html", context=context)
         return render_template("index.html")
 
     @app.route("/try", methods=["GET"])
@@ -330,6 +361,9 @@ class AiVoiceResource(Resource):
 
     @app.route("/signin", methods=["GET", "POST"])
     def signin():
+        if current_user.is_authenticated:
+            return redirect(url_for("index"))
+
         form = LoginForm()
         if form.validate_on_submit():
             user = (
@@ -389,8 +423,6 @@ class AiVoiceResource(Resource):
                     return redirect(url_for("signin"))
                 else:
                     return redirect(url_for("validate"))
-                # except:
-                #     return redirect(url_for("validate"))
             else:
                 redirect(url_for("signup"))
         return render_template("validate.html", form=form)
@@ -433,6 +465,7 @@ class AiVoiceResource(Resource):
 
     @app.route("/contact")
     def contact():
+
         return render_template("contact.html")
 
     @app.route("/Examples")
@@ -444,23 +477,22 @@ class AiVoiceResource(Resource):
         stripe_config = {"publicKey": stripe_keys["publishable_key"]}
         return jsonify(stripe_config)
 
+    @app.route("/howto")
+    def HowTo():
+        return render_template("howto.html")
+
     @app.route("/create-checkout-session")
     def create_checkout_session():
-        domain_url = "http://localhost:5000/"
+        domain_url = "https://bravovoice.in/"
         stripe.api_key = stripe_keys["secret_key"]
 
         try:
             checkout_session = stripe.checkout.Session.create(
-                # you should get the user id here and pass it along as 'client_reference_id'
-                #
-                # this will allow you to associate the Stripe session with
-                # the user saved in your database
-                #
-                # example: client_reference_id=user.id,
                 success_url=domain_url + "success?session_id={CHECKOUT_SESSION_ID}",
-                cancel_url=domain_url + "cancel",
+                cancel_url=domain_url + "index",
                 payment_method_types=["card"],
                 mode="subscription",
+                client_reference_id=current_user.id,
                 line_items=[
                     {
                         "price": stripe_keys["price_id"],
@@ -468,60 +500,211 @@ class AiVoiceResource(Resource):
                     }
                 ],
             )
+            user = (
+                db.session.query(LoginModel)
+                .filter(LoginModel.id == current_user.id)
+                .first()
+            )
+            user.progress = stripe_keys["price_id"]
+            db.session.commit()
             return jsonify({"sessionId": checkout_session["id"]})
         except Exception as e:
             return jsonify(error=str(e)), 403
+
+    @app.route("/create-checkout-sessions")
+    def create_checkout_sessions():
+        domain_url = "https://bravovoice.in/"
+        stripe.api_key = stripe_keys["secret_key"]
+
+        try:
+            checkout_session = stripe.checkout.Session.create(
+                success_url=domain_url + "success?session_id={CHECKOUT_SESSION_ID}",
+                cancel_url=domain_url + "index",
+                payment_method_types=["card"],
+                mode="subscription",
+                client_reference_id=current_user.id,
+                line_items=[
+                    {
+                        "price": stripe_keys["price_id1"],
+                        "quantity": 1,
+                    }
+                ],
+            )
+            user = (
+                db.session.query(LoginModel)
+                .filter(LoginModel.id == current_user.id)
+                .first()
+            )
+            user.progress = stripe_keys["price_id1"]
+            db.session.commit()
+            return jsonify({"sessionId": checkout_session["id"]})
+        except Exception as e:
+            return jsonify(error=str(e)), 403
+
+    @app.route("/webhook", methods=["POST"])
+    def stripe_webhook():
+        payload = request.get_data(as_text=True)
+        sig_header = request.headers.get("Stripe-Signature")
+
+        try:
+            event = stripe.Webhook.construct_event(
+                payload, sig_header, stripe_keys["endpoint_secret"]
+            )
+
+        except ValueError as e:
+            # Invalid payload
+            return "Invalid payload", 400
+        except stripe.error.SignatureVerificationError as e:
+            # Invalid signature
+            return "Invalid signature", 400
+
+        # Handle the checkout.session.completed event
+        if event["type"] == "checkout.session.completed":
+            session = event["data"]["object"]
+
+            # Fulfill the purchase...
+            AiVoiceResource.handle_checkout_session(session)
+        if event["type"] == "customer.subscription.deleted":
+            session = event["data"]["object"]
+            AiVoiceResource.handle_checkout_session(session)
+
+        return "Success", 200
+
+    def handle_checkout_session(session):
+        user_data = (
+            db.session.query(LoginModel)
+            .filter(LoginModel.id == session["client_reference_id"])
+            .first()
+        )
+        product_data = (
+            db.session.query(products)
+            .filter(products.price_id == user_data.progress)
+            .first()
+        )
+        stripe_user = (
+            db.session.query(StripeCustomer)
+            .filter(
+                StripeCustomer.user_id == session["client_reference_id"],
+            )
+            .first()
+        )
+        if not stripe_user:
+            new_user = StripeCustomer(
+                stripeCustomerId=session["customer"],
+                stripeSubscriptionId=session["subscription"],
+                user_id=session["client_reference_id"],
+            )
+            db.session.add(new_user)
+        else:
+            if stripe_user:
+                subscription = stripe.Subscription.retrieve(
+                    stripe_user.stripeSubscriptionId
+                )
+                stripe.Subscription.modify(subscription.id, cancel_at_period_end=True)
+            stripe_user.stripeCustomerId = (session["customer"],)
+            stripe_user.stripeSubscriptionId = session["subscription"]
+
+        user_data.subscription_tier = product_data.Product
+        user_data.downloads = 0
+
+        db.session.commit()
+
+    @app.route("/account", methods=["GET"])
+    @login_required
+    def account():
+        form = accountform()
+        return render_template("account.html", form=form)
+
+    @app.route("/account", methods=["POST"])
+    @login_required
+    def manage():
+        form = accountform()
+        if form.validate_on_submit:
+            stripe.api_key = stripe_keys["secret_key"]
+            stripe.billing_portal.Configuration.create(
+                business_profile={
+                    "headline": "Bravo partners with Stripe for simplified billing.",
+                },
+                features={"invoice_history": {"enabled": True}},
+            )
+            stripe_user = (
+                db.session.query(StripeCustomer).filter(
+                    StripeCustomer.user_id == current_user.id,
+                )
+            ).first()
+
+            if not stripe_user:
+                return redirect("pricing")
+            session = stripe.billing_portal.Session.create(
+                customer=stripe_user.stripeCustomerId,
+                return_url="https://bravovoice.in/account",
+            )
+
+        return redirect(session.url)
 
     @app.route("/try", methods=["POST"])
     @login_required
     def ai_voice():
         if current_user.is_authenticated and current_user.is_verified == True:
+            user = current_user.get_id()
+            user_data = (
+                db.session.query(LoginModel).filter(LoginModel.id == user).first()
+            )
             form = TryNow()
+            customer = StripeCustomer.query.filter_by(user_id=current_user.id).first()
+            if customer:
+                subscription = stripe.Subscription.retrieve(
+                    customer.stripeSubscriptionId
+                )
+                if subscription.status != "active":
+                    return redirect(url_for("pricing"))
+            max_character_count, max_downloads = get_subscription_tier(
+                user_data.subscription_tier
+            )
+            character_count = 0
+
+            if user_data.downloads >= max_downloads:
+                return redirect(url_for("pricing"))
             if form.validate_on_submit:
                 text_file = form.text_file.data
                 voice_file = form.voice.data
+                for characters in text_file:
+                    character_count += 1
+                if character_count > max_character_count:
+                    return redirect(url_for("pricing"))
                 if current_user.subscription_tier == "FREE":
                     voice_quality = form.low_quality.data
                     custom_voices = None
                     calculation = 0
                 else:
-                    custom_voices = form.Custom_Voice.data
+
+                    if form.Custom_Voice.data.filename == "":
+                        custom_voices, blob = None, None
+                    else:
+
+                        form.Custom_Voice.data.save(
+                            os.path.join(
+                                "/tmp", secure_filename(form.Custom_Voice.data.filename)
+                            )
+                        )
+                        from storage import create_folder_tmp
+
+                        custom_voices, blob = create_folder_tmp(
+                            current_user.username,
+                            os.path.join(
+                                "/tmp", secure_filename(form.Custom_Voice.data.filename)
+                            ),
+                            form.Custom_Voice.data.filename,
+                        )
+
                     voice_quality = form.other_quality.data
-                    calculation = 1
-
-                if current_user.is_authenticated:
-                    user = current_user.get_id()
-                    user_data = (
-                        db.session.query(LoginModel)
-                        .filter(LoginModel.id == user)
-                        .first()
-                    )
-                max_character_count, max_downloads = get_subscription_tier(
-                    user_data.subscription_tier
-                )
-                character_count = 0
-                for characters in text_file:
-                    character_count += 1
-                if character_count > max_character_count:
-                    return redirect(url_for("pricing"))
-                if user_data.downloads >= max_downloads:
-                    return redirect(url_for("pricing"))
-
+                    calculation = 0.70
                 splitting_into_smaller = tokenizer.tokenize(text_file)
                 number = []
                 threads = []
                 for i in splitting_into_smaller:
                     normal_string = "".join(ch for ch in i if ch.isalnum())
                     number.append(normal_string)
-                    # jobs.put(
-                    #     heavy_func(
-                    #         i,
-                    #         voice_file,
-                    #         quality=voice_quality,
-                    #         calculation=calculation,
-                    #         custom_voice=custom_voices,
-                    #     )
-                    # )
                     j = threading.Thread(
                         target=heavy_func,
                         args=(i, voice_file, voice_quality, calculation, custom_voices),
@@ -534,7 +717,7 @@ class AiVoiceResource(Resource):
                 username = user_data.username
                 threading.Thread(
                     target=concatenate_audio_moviepy,
-                    args=(number, threads, file_name, username),
+                    args=(number, threads, file_name, username, blob),
                 ).start()
                 user_data.downloads += 1
                 db.session.commit()

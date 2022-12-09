@@ -14,6 +14,17 @@ gcs = lazy_GCS(
 )
 
 
+def delete_blob(
+    blob,
+):
+    """Deletes a blob from the bucket."""
+    # bucket_name = "your-bucket-name"
+    # blob_name = "your-object-name"
+    blob.delete()
+
+    print(f"Blob {blob} deleted.")
+
+
 def create_folder(
     username,
     filename,
@@ -24,9 +35,26 @@ def create_folder(
     bucket = storage_client.get_bucket(bucket_name)  # your bucket name
 
     blob = bucket.blob(f"{username}/{username_downloads}")
+
     blob.upload_from_filename(filename)
     blob.make_public()
-    return blob.public_url
+    return blob.public_url, blob
+
+
+def create_folder_tmp(
+    username,
+    filename,
+    username_downloads,
+    bucket_name="user_files_for_bravo",
+):
+
+    bucket = storage_client.get_bucket(bucket_name)  # your bucket name
+
+    blob = bucket.blob(f"{username}+tmp/{username_downloads}")
+
+    blob.upload_from_filename(filename)
+    blob.make_public()
+    return blob.public_url, blob
 
 
 def test(username):
@@ -39,7 +67,6 @@ def test(username):
         all_file=False,  # If True : Will get all files from folder and sub-folder(s)
     )
     bucket = storage_client.get_bucket("user_files_for_bravo")
-    print(j)
     l = []  # your bucket name
     for i in j:
         blob = bucket.blob(f"{i}")

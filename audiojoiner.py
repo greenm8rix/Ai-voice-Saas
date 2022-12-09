@@ -2,11 +2,11 @@ import os
 from moviepy.editor import concatenate_audioclips, AudioFileClip
 from config import db, app
 from model import LoginModel
-from storage import create_folder
+from storage import create_folder, delete_blob
 import threading
 
 
-def concatenate_audio_moviepy(number, threads, username, name):
+def concatenate_audio_moviepy(number, threads, username, name, blob):
     with app.app_context():
         user_data = (
             db.session.query(LoginModel).filter(LoginModel.username == name).first()
@@ -32,7 +32,7 @@ def concatenate_audio_moviepy(number, threads, username, name):
             final_clip.write_audiofile(output_path)
             destination_folder = user_data.username + str(user_data.downloads) + ".mp3"
 
-            url = create_folder(
+            url, sob = create_folder(
                 username=user_data.username,
                 filename=output_path,
                 username_downloads=destination_folder,
@@ -41,6 +41,8 @@ def concatenate_audio_moviepy(number, threads, username, name):
             user_data.progress = "Done."
             db.session.commit()
             os.remove(output_path)
+            if blob != None:
+                delete_blob(blob)
             for j in number:
                 for x in dirs:
                     if j + ".mp3" == x:

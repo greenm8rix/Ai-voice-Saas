@@ -85,4 +85,5 @@ WTForms==3.0.1
 yarl==1.8.1
 zipp==3.8.0
 py_topping
-psycogreen 
+psycogreen
+stripe 

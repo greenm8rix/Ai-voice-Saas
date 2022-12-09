@@ -5,7 +5,7 @@ def get_subscription_tier(subscription_tier):
 
     if subscription_tier == "Personal":
         max_character_count = 1200
-        max_downloads = 8
+        max_downloads = 3333333
     if subscription_tier == "ContentCreator":
         max_character_count = 1000
         max_downloads = 30

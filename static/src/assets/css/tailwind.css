@@ -1799,7 +1799,9 @@ body {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
-
+.sticky .loginBtn .bibi-person-circle  {
+  fill:black;
+}
 .sticky .signUpBtn:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(9 14 52 / var(--tw-bg-opacity));

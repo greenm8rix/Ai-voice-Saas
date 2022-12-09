@@ -90,12 +90,101 @@
                       Examples
                     </a>
                   </li>
-                  
+                  <li class="submenu-item group relative">
+                    <a
+                      href="javascript:void(0)"
+                      class="relative mx-8 flex py-2 text-base text-dark after:absolute after:right-1 after:top-1/2 after:mt-[-2px] after:h-2 after:w-2 after:-translate-y-1/2 after:rotate-45 after:border-b-2 after:border-r-2 after:border-current group-hover:text-primary lg:mr-0 lg:ml-8 lg:inline-flex lg:py-6 lg:pl-0 lg:pr-4 lg:text-white lg:after:right-0 lg:group-hover:text-white lg:group-hover:opacity-70 xl:ml-12"
+                    >
+                      Pages
+                    </a>
+                    <div
+                      class="submenu relative top-full left-0 hidden w-[250px] rounded-sm bg-white p-4 transition-[top] duration-300 group-hover:opacity-100 lg:invisible lg:absolute lg:top-[110%] lg:block lg:opacity-0 lg:shadow-lg lg:group-hover:visible lg:group-hover:top-full"
+                    >
+                    <a
+                        href="try"
+                        class="block rounded py-[10px] px-4 text-sm text-body-color hover:text-primary"
+                      >
+                        Try Now
+                      </a>
+                      <a
+                        href="index"
+                        class="block rounded py-[10px] px-4 text-sm text-body-color hover:text-primary"
+                      >
+                        Home
+                      </a>
+                      
+                      <a
+                        href="pricing"
+                        class="block rounded py-[10px] px-4 text-sm text-body-color hover:text-primary"
+                      >
+                        Pricing
+                      </a>
+                      <a
+                        href="contact"
+                        class="block rounded py-[10px] px-4 text-sm text-body-color hover:text-primary"
+                      >
+                        Contact
+                      </a>
+                      <a
+                        href="Examples"
+                        class="block rounded py-[10px] px-4 text-sm text-body-color hover:text-primary"
+                      >
+                        Examples
+                      </a>
+                      <a
+                        href="howto"
+                        class="block rounded py-[10px] px-4 text-sm text-body-color hover:text-primary"
+                      >
+                        How To Use
+                      </a>
+                      {% if current_user.is_authenticated %}
+                      <a
+                        href="dashboard"
+                        class="block rounded py-[10px] px-4 text-sm text-body-color hover:text-primary"
+                      >
+                        Dashboard
+                      </a>
+                      <a
+                        href="account"
+                        class="block rounded py-[10px] px-4 text-sm text-body-color hover:text-primary"
+                      >
+                        Account
+                      </a>
+                      <a
+                        href="logout"
+                        class="block rounded py-[10px] px-4 text-sm text-body-color hover:text-primary"
+                      >
+                        Log Out
+                      </a>
+                      {%else%}
+                      <a
+                        href="signup"
+                        class="block rounded py-[10px] px-4 text-sm text-body-color hover:text-primary"
+                      >
+                        Sign Up 
+                      </a>
+                      <a
+                        href="signin"
+                        class="block rounded py-[10px] px-4 text-sm text-body-color hover:text-primary"
+                      >
+                        Log In 
+                      </a>
+                      {%endif%}
+                    </div>
+                  </li>
                 </ul>
               </nav>
             </div>
             <div class="hidden justify-end pr-16 sm:flex lg:pr-0">
               {% if current_user.is_authenticated %}
+              <div class="loginBtn py-3 px-7 text-base font-medium text-white hover:opacity-70">
+                <a href="account" >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="White" class="bibi-person-circle" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                  </svg>
+                </a>
+              </div>
               <a
                 href="logout"
                 class="signUpBtn rounded-lg bg-white bg-opacity-20 py-3 px-6 text-base font-medium text-white duration-300 ease-in-out hover:bg-opacity-100 hover:text-dark"
@@ -240,7 +329,7 @@
                           </div>
                           <div>
                             <div class="dropdown">
-                              <span class="mb-5 inline-block bg-primary py-2 px-5 text-sm font-medium text-white" >Hints</span>
+                              <span class="mb-5 inline-block bg-primary py-2 px-5 text-sm font-medium text-white" ><a href="howto">Hints</a></span>
                               <div class="dropdown-content">
                                 <p>Prompt Engineering 
                                   Bravo is capable of "prompt-engineering" in that tone and prosody is affected by the emotions inflected in the words fed to the program. For example, prompting the model with "[I am so angry,] I went to the park and threw a ball" will result in it outputting "I went to the park and threw the ball" with an angry tone.</p>
@@ -265,7 +354,9 @@
                                 <div class="mb-6">
                                   <label for="Custom_Voice">Upload file for custom Voice:</label>
                                   {{form.Custom_Voice}}
-                                
+                                  <div>
+                                  <a>Create a custom voice based on an mp3 file of a speaker. Audio should be at least 15 seconds, only contain one speaker, and be in mp3 format.</a>
+                                </div>
                                 </div> 
                                 {% endif %}
                               </div>
@@ -641,7 +732,7 @@
                   Designed and Developed by
                   <a                   
                   >
-                    ExalioDevelopment
+                    Exalio
                   </a>
                 </p>
               </div>
@@ -932,9 +1023,15 @@
     <!-- ====== All Scripts -->
     <script src="static/src/assets/js/main.js"></script>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-489F54ZEJB"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-489F54ZEJB"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-489F54ZEJB');
+    </script>
 <script>
-document.getElementById("Custom_Voice").disabled = true;
   $('textarea').keyup(function() {
     
   var characterCount = $(this).val().length,

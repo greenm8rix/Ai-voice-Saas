@@ -8,10 +8,18 @@ env_variables:
   CLOUD_SQL_PASSWORD: "&2Pdd4zAp[>.8QDa"
   CLOUD_SQL_DATABASE_NAME: bravo_ai
   CLOUD_SQL_CONNECTION_NAME: bravo-ai-voice:asia-south1:bravo-instace
-  STRIPE_PUBLISHABLE_KEY:pk_test_51M6WnuSFFYmekMFSPTqnSAPsasv6iK6YV7rjXIlF0bMWU0JynbJGH3p6n5PajptzEslW9sBQ1uGs2qZ3nAcZ8dCa00IsRAv1ox
-  STRIPE_SECRET_KEY:sk_test_51M6WnuSFFYmekMFS1UFwEnIelSNYNFe7rHFZk7KdhMxR5qCHpeivJSkFkW9LjYlhGkLojbFo7dyKnYDFHbocDJjt00edqZVYOM
-  STRIPE_PRICE_ID:price_1MBcDTSFFYmekMFSzBM49k45
+  STRIPE_PUBLISHABLE_KEY: pk_live_51M6WnuSFFYmekMFSz50FYtxHxxsedlxr3rChKOYBxnKQdgxLld29iDF11dDeeKsyIbJvTRf6mBYOFaRgCG1W5Lpa00J1ZIOiwe
+  STRIPE_SECRET_KEY: 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
+  STRIPE_PRICE_ID: price_1MBalXSFFYmekMFSu0ctEgWG
+  STRIPE_PRICE_ID1: price_1MBcoxSFFYmekMFSdxRTmiCq
+  STRIPE_ENDPOINT_SECRET: whsec_xFvHa9X2qGn1jRPdZwzE4E2BEPWq4iau
+  REPLICATE_API_TOKEN: 32e56e6e80146f4301c4dd5dd7c50f9f6d941913
 entrypoint: ./run.sh
+handlers:
+  - url: /.*
+    secure: always
+    redirect_http_response_code: 301
+    script: auto
 automatic_scaling:
   min_num_instances: 1
   max_num_instances: 8
