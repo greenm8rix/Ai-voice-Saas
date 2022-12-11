@@ -45,7 +45,6 @@ from flask_bcrypt import Bcrypt
 from model import LoginModel, products, StripeCustomer
 import nltk.data
 from audiojoiner import concatenate_audio_moviepy
-from queue import Queue
 from storage import test
 
 tokenizer = nltk.data.load("tokenizers/punkt/english.pickle")
@@ -57,7 +56,6 @@ login_manager.login_view = "signin"
 from google.cloud import storage
 import stripe
 
-jobs = Queue()
 storage_client = storage.Client()
 voices_available = (
     "angie",
@@ -197,7 +195,6 @@ class TryNow(FlaskForm):
     )
 
     text_file = TextAreaField(
-        "text",
         validators=[InputRequired(), Length(min=8, max=1000)],
         render_kw={
             "placeholder": "Enter Your Text(50) Characters",
@@ -280,12 +277,6 @@ def heavy_func(
         output,
         text_file,
     )
-
-
-def do_stuff(q):
-    while not q.empty():
-        value = q.get()
-        q.task_done()
 
 
 class AiVoiceResource(Resource):
@@ -481,6 +472,10 @@ class AiVoiceResource(Resource):
     def HowTo():
         return render_template("howto.html")
 
+    @app.route("/error")
+    def error():
+        return render_template("error.html")
+
     @app.route("/create-checkout-session")
     def create_checkout_session():
         domain_url = "https://bravovoice.in/"
@@ -671,11 +666,11 @@ class AiVoiceResource(Resource):
                 for characters in text_file:
                     character_count += 1
                 if character_count > max_character_count:
-                    return redirect(url_for("pricing"))
+                    return redirect(url_for("error"))
                 if current_user.subscription_tier == "FREE":
                     voice_quality = form.low_quality.data
                     custom_voices = None
-                    calculation = 0
+                    calculation = 0.70
                 else:
 
                     if form.Custom_Voice.data.filename == "":
@@ -699,7 +694,14 @@ class AiVoiceResource(Resource):
 
                     voice_quality = form.other_quality.data
                     calculation = 0.70
+                text_file = (
+                    text_file.replace("!", " ").replace("  ", " ").replace("\n", ".\n")
+                )
                 splitting_into_smaller = tokenizer.tokenize(text_file)
+                for x in splitting_into_smaller:
+                    if len(x) > 200:
+                        redirect(url_for("error"))
+
                 number = []
                 threads = []
                 for i in splitting_into_smaller:
