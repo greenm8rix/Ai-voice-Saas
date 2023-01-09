@@ -87,3 +87,4 @@ zipp==3.8.0
 py_topping
 psycogreen
 stripe 
+openai

@@ -18,7 +18,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
-      Bravo | Success
+      Bravo | Error
     </title>
     <link
       rel="shortcut icon"
@@ -34,26 +34,50 @@
     </script>
   </head>
   <body>
-    <div class="container mt-5">
-      <p>You have successfully subscribed!</p>
-    </div>
     <div  class="container mt-5">
-      <a
-      href="index"
-      class="signUpBtn rounded-lg bg-blue bg-opacity-20 py-3 px-6 text-base font-medium text-black duration-300 ease-in-out hover:bg-opacity-100 hover:text-dark"
-    >
-      Go back To HomePage
-    </a>
-    </div>
-    <script>
-      window.onload = function() {
-    // similar behavior as clicking on a link
-    window.location.href = "https://bravovoice.in/";
-}
-      
-  
+      <div id="myModal" class="modal">
 
-       
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <a
+                href="try"
+                class="inline-flex items-center justify-center rounded-lg bg-blue py-4 px-6 text-center text-base font-medium text-dark transition duration-300 ease-in-out hover:text-primary hover:shadow-lg sm:px-10"
+              >
+                AI Voice Generator
+              </a>
+              <a
+                href="aicontent"
+                class="inline-flex items-center justify-center rounded-lg bg-blue py-4 px-10 text-center text-base font-medium text-dark transition duration-300 ease-in-out hover:text-primary hover:shadow-lg sm:px-10"
+              >
+                AI Content Generator
+              </a>
+        </div>
+    <script>
+      var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myModal");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal
+btn.onload = () =>  function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  window.location.href = "https://bravovoice.in/try";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+  window.location.href = "https://bravovoice.in/try";
+}
+}
   </script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-489F54ZEJB"></script>
   <script>

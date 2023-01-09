@@ -15,6 +15,7 @@ app = Flask(
     template_folder="templates",
     static_folder="static",
 )
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
 # app.config[
 #     "SQLALCHEMY_DATABASE_URI"

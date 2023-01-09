@@ -4,7 +4,57 @@ fetch("/config")
   })
   .then((data) => {
     // Initialize Stripe.js
-    const stripe = stripe(data.publicKey);
+    const stripe = Stripe(data.publicKey);
+
+    // Event handler
+    document.querySelector("#submitBtn1").addEventListener("click", () => {
+      // Get Checkout Session ID
+      fetch("/create-checkout-sessions1")
+        .then((result) => {
+          return result.json();
+        })
+        .then((data) => {
+          console.log(data);
+          // Redirect to Stripe Checkout
+          return stripe.redirectToCheckout({ sessionId: data.sessionId });
+        })
+        .then((res) => {
+          console.log(res);
+        });
+    });
+  });
+fetch("/config")
+  .then((result) => {
+    return result.json();
+  })
+  .then((data) => {
+    // Initialize Stripe.js
+    const stripe = Stripe(data.publicKey);
+
+    // Event handler
+    document.querySelector("#submitBtn2").addEventListener("click", () => {
+      // Get Checkout Session ID
+      fetch("/create-checkout-sessions2")
+        .then((result) => {
+          return result.json();
+        })
+        .then((data) => {
+          console.log(data);
+          // Redirect to Stripe Checkout
+          return stripe.redirectToCheckout({ sessionId: data.sessionId });
+        })
+        .then((res) => {
+          console.log(res);
+        });
+    });
+  });
+fetch("/config")
+  .then((result) => {
+    return result.json();
+  })
+  .then((data) => {
+    // Initialize Stripe.js
+    const stripe = Stripe(data.publicKey);
 
     // Event handler
     document.querySelector("#submitBtn").addEventListener("click", () => {
@@ -29,7 +79,7 @@ fetch("/config")
   })
   .then((data) => {
     // Initialize Stripe.js
-    const stripe = stripe(data.publicKey);
+    const stripe = Stripe(data.publicKey);
 
     // Event handler
     document.querySelector("#submitBtns").addEventListener("click", () => {

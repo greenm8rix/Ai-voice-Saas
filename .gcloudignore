@@ -34,3 +34,5 @@
 /setup.cfg
 tmp/
 /tmp
+g.py
+g copy.py

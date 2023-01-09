@@ -1,11 +1,13 @@
 import json
 from random import randint
+import string
 import threading
 from time import sleep
 import time
 import uuid
 from flask_migrate import Migrate
 import os
+import aicontent
 from flask import (
     flash,
     jsonify,
@@ -30,6 +32,8 @@ from flask_login import (
     logout_user,
     current_user,
 )
+from google.oauth2.credentials import Credentials
+from googleapiclient.discovery import build
 from email_otp import *
 from flask_wtf import FlaskForm
 from wtforms import (
@@ -42,7 +46,7 @@ from wtforms import (
 )
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
-from model import LoginModel, products, StripeCustomer
+from model import LoginModel, StripeCustomers, products, StripeCustomer
 import nltk.data
 from audiojoiner import concatenate_audio_moviepy
 from storage import test
@@ -93,6 +97,8 @@ secret_key = os.environ.get("STRIPE_SECRET_KEY")
 publishable_key = os.environ.get("STRIPE_PUBLISHABLE_KEY")
 price_id = os.environ.get("STRIPE_PRICE_ID")
 price_id1 = os.environ.get("STRIPE_PRICE_ID1")
+price_id2 = os.environ.get("STRIPE_PRICE_ID2")
+price_id3 = os.environ.get("STRIPE_PRICE_ID3")
 endpoint_secret = os.environ.get("STRIPE_ENDPOINT_SECRET")
 stripe_keys = {
     "secret_key": secret_key,
@@ -100,6 +106,8 @@ stripe_keys = {
     "price_id": price_id,
     "endpoint_secret": endpoint_secret,
     "price_id1": price_id1,
+    "price_id2": price_id2,
+    "price_id3": price_id3,
 }
 stripe.api_key = stripe_keys["secret_key"]
 
@@ -197,7 +205,7 @@ class TryNow(FlaskForm):
     text_file = TextAreaField(
         validators=[InputRequired(), Length(min=8, max=1000)],
         render_kw={
-            "placeholder": "Enter Your Text(50) Characters",
+            "placeholder": "Enter Your Text(1000) Characters And 200 characters Per Sentence",
             "class": "bordder-[#E9EDF4] w-full rounded-md border bg-[#FCFDFE] py-3 px-5 text-base text-body-color placeholder-[#ACB6BE] outline-none transition focus:border-primary focus-visible:shadow-none",
         },
     )
@@ -241,7 +249,7 @@ class ValidateForm(FlaskForm):
 class accountform(FlaskForm):
 
     submit = SubmitField(
-        "Manage Billing",
+        "Manage Ai Voice Billing",
         render_kw={
             "class": "inline-flex items-center justify-center rounded-lg bg-blue py-4 px-6 text-center text-base font-medium text-dark transition duration-300 ease-in-out hover:text-primary hover:shadow-lg sm:px-10"
         },
@@ -374,7 +382,7 @@ class AiVoiceResource(Resource):
                     if bcrypt.check_password_hash(user.password, form.password.data):
                         login_user(user)
 
-                        return redirect(url_for("trynow"))
+                        return redirect(url_for("choose"))
                     else:
                         return redirect(url_for("signin"))
 
@@ -386,7 +394,10 @@ class AiVoiceResource(Resource):
             else:
                 return redirect(url_for("signup"))
 
-        return render_template("signin.html", form=form)
+        return render_template(
+            "signin.html",
+            form=form,
+        )
 
     @app.route("/validate", methods=["GET", "POST"])
     def validate():
@@ -416,7 +427,10 @@ class AiVoiceResource(Resource):
                     return redirect(url_for("validate"))
             else:
                 redirect(url_for("signup"))
-        return render_template("validate.html", form=form)
+        return render_template(
+            "validate.html",
+            form=form,
+        )
 
     @app.route("/signup", methods=["GET", "POST"])
     def signup():
@@ -431,8 +445,10 @@ class AiVoiceResource(Resource):
                 username=form.username.data,
                 password=hashed_password,
                 subscription_tier="FREE",
+                subscription_tier_content="FREE",
                 is_verified=False,
                 downloads=0,
+                downloads_content=0,
             )
             current_otp = sendEmailVerificationRequest(receiver=form.email.data)
             session["current_otp"] = current_otp
@@ -442,7 +458,10 @@ class AiVoiceResource(Resource):
             db.session.commit()
             return redirect(url_for("validate"))
 
-        return render_template("signup.html", form=form)
+        return render_template(
+            "signup.html",
+            form=form,
+        )
 
     @app.route("/logout", methods=["GET", "POST"])
     @login_required
@@ -536,6 +555,66 @@ class AiVoiceResource(Resource):
         except Exception as e:
             return jsonify(error=str(e)), 403
 
+    @app.route("/create-checkout-sessions1")
+    def create_checkout_sessions1():
+        domain_url = "https://bravovoice.in/"
+        stripe.api_key = stripe_keys["secret_key"]
+
+        try:
+            checkout_session = stripe.checkout.Session.create(
+                success_url=domain_url + "success?session_id={CHECKOUT_SESSION_ID}",
+                cancel_url=domain_url + "index",
+                payment_method_types=["card"],
+                mode="subscription",
+                client_reference_id=current_user.id,
+                line_items=[
+                    {
+                        "price": stripe_keys["price_id2"],
+                        "quantity": 1,
+                    }
+                ],
+            )
+            user = (
+                db.session.query(LoginModel)
+                .filter(LoginModel.id == current_user.id)
+                .first()
+            )
+            user.progress = stripe_keys["price_id2"]
+            db.session.commit()
+            return jsonify({"sessionId": checkout_session["id"]})
+        except Exception as e:
+            return jsonify(error=str(e)), 403
+
+    @app.route("/create-checkout-sessions2")
+    def create_checkout_sessions2():
+        domain_url = "https://bravovoice.in/"
+        stripe.api_key = stripe_keys["secret_key"]
+
+        try:
+            checkout_session = stripe.checkout.Session.create(
+                success_url=domain_url + "success?session_id={CHECKOUT_SESSION_ID}",
+                cancel_url=domain_url + "index",
+                payment_method_types=["card"],
+                mode="subscription",
+                client_reference_id=current_user.id,
+                line_items=[
+                    {
+                        "price": stripe_keys["price_id3"],
+                        "quantity": 1,
+                    }
+                ],
+            )
+            user = (
+                db.session.query(LoginModel)
+                .filter(LoginModel.id == current_user.id)
+                .first()
+            )
+            user.progress = stripe_keys["price_id3"]
+            db.session.commit()
+            return jsonify({"sessionId": checkout_session["id"]})
+        except Exception as e:
+            return jsonify(error=str(e)), 403
+
     @app.route("/webhook", methods=["POST"])
     def stripe_webhook():
         payload = request.get_data(as_text=True)
@@ -576,13 +655,26 @@ class AiVoiceResource(Resource):
             .filter(products.price_id == user_data.progress)
             .first()
         )
-        stripe_user = (
-            db.session.query(StripeCustomer)
-            .filter(
-                StripeCustomer.user_id == session["client_reference_id"],
+        if (
+            product_data.Product == "Personal"
+            or product_data.Product == "ContentCreator"
+        ):
+            stripe_user = (
+                db.session.query(StripeCustomer)
+                .filter(
+                    StripeCustomer.user_id == session["client_reference_id"],
+                )
+                .first()
             )
-            .first()
-        )
+        else:
+            stripe_user = (
+                db.session.query(StripeCustomers)
+                .filter(
+                    StripeCustomers.user_id == session["client_reference_id"],
+                )
+                .first()
+            )
+
         if not stripe_user:
             new_user = StripeCustomer(
                 stripeCustomerId=session["customer"],
@@ -595,12 +687,24 @@ class AiVoiceResource(Resource):
                 subscription = stripe.Subscription.retrieve(
                     stripe_user.stripeSubscriptionId
                 )
-                stripe.Subscription.modify(subscription.id, cancel_at_period_end=True)
+                if subscription.status != "active":
+                    stripe_user.stripeCustomerId = (session["customer"],)
+                    stripe_user.stripeSubscriptionId = session["subscription"]
+                else:
+                    stripe.Subscription.modify(subscription.id)
             stripe_user.stripeCustomerId = (session["customer"],)
             stripe_user.stripeSubscriptionId = session["subscription"]
-
-        user_data.subscription_tier = product_data.Product
-        user_data.downloads = 0
+        if (
+            product_data.Product == "Personal"
+            or product_data.Product == "ContentCreator"
+        ):
+            user_data.subscription_tier = product_data.Product
+            user_data.subscription_tier_content = product_data.Product
+            user_data.downloads = 0
+            user_data.downloads_content = 0
+        else:
+            user_data.subscription_tier_content = product_data.Product
+            user_data.downloads_content = 0
 
         db.session.commit()
 
@@ -637,9 +741,40 @@ class AiVoiceResource(Resource):
 
         return redirect(session.url)
 
+    @app.route("/accounts", methods=["POST"])
+    @login_required
+    def manages():
+        form = accountform()
+        if form.validate_on_submit:
+            stripe.api_key = stripe_keys["secret_key"]
+            stripe.billing_portal.Configuration.create(
+                business_profile={
+                    "headline": "Bravo partners with Stripe for simplified billing.",
+                },
+                features={
+                    "invoice_history": {"enabled": True},
+                    "subscription_cancel": {"enabled": True},
+                },
+            )
+            stripe_user = (
+                db.session.query(StripeCustomers).filter(
+                    StripeCustomers.user_id == current_user.id,
+                )
+            ).first()
+
+            if not stripe_user:
+                return redirect("pricing")
+            session = stripe.billing_portal.Session.create(
+                customer=stripe_user.stripeCustomerId,
+                return_url="https://bravovoice.in/account",
+            )
+
+        return redirect(session.url)
+
     @app.route("/try", methods=["POST"])
     @login_required
     def ai_voice():
+        blob = None
         if current_user.is_authenticated and current_user.is_verified == True:
             user = current_user.get_id()
             user_data = (
@@ -700,7 +835,7 @@ class AiVoiceResource(Resource):
                 splitting_into_smaller = tokenizer.tokenize(text_file)
                 for x in splitting_into_smaller:
                     if len(x) > 200:
-                        redirect(url_for("error"))
+                        return redirect(url_for("error"))
 
                 number = []
                 threads = []
@@ -726,9 +861,174 @@ class AiVoiceResource(Resource):
                 return redirect(url_for("dashboard"))
             return redirect(url_for("validate"))
 
+    @app.route("/aicontent", methods=["GET", "POST"])
+    def aicontent():
+        return render_template("aicontent.html", **locals())
+
+    @app.route("/product-description", methods=["GET", "POST"])
+    @login_required
+    def productDescription():  # product description
+
+        if request.method == "POST":
+            query = request.form["productDescription"]
+            openAIAnswer = aicontent.aicontent(
+                "generate a product description for " + query, current_user.get_id()
+            )
+            if openAIAnswer == "exceeded":
+                return redirect(url_for("pricing"))
+            prompt = "AI Suggestions for {} are:".format(query)
+
+        return render_template("product-description.html", **locals())
+
+    @app.route("/job-description", methods=["GET", "POST"])
+    @login_required
+    def jobDescription():  # job description
+
+        if request.method == "POST":
+            query = request.form["jobDescription"]
+            openAIAnswer = aicontent.aicontent(
+                "generate a job description for " + query, current_user.get_id()
+            )
+            if openAIAnswer == "exceeded":
+                return redirect(url_for("pricing"))
+
+            prompt = "AI Suggestions for {} are:".format(query)
+
+        return render_template("job-description.html", **locals())
+
+    @app.route("/tweet-ideas", methods=["GET", "POST"])
+    @login_required
+    def tweetIdeas():  # tweet ideas
+
+        if request.method == "POST":
+            query = request.form["tweetIdeas"]
+            openAIAnswer = aicontent.aicontent(
+                "generate tweet ideas for " + query, current_user.get_id()
+            )
+            if openAIAnswer == "exceeded":
+                return redirect(url_for("pricing"))
+            prompt = "AI Suggestions for {} are:".format(query)
+
+        return render_template("tweet-ideas.html", **locals())
+
+    @app.route("/cold-emails", methods=["GET", "POST"])
+    @login_required
+    def coldEmails():  # coldemails
+
+        if request.method == "POST":
+            query = request.form["coldEmails"]
+            openAIAnswer = aicontent.aicontent(
+                "write a cold email for " + query, current_user.get_id()
+            )
+            if openAIAnswer == "exceeded":
+                return redirect(url_for("pricing"))
+            prompt = "AI Suggestions for {} are:".format(query)
+
+        return render_template("cold-emails.html", **locals())
+
+    @app.route("/social-media", methods=["GET", "POST"])
+    @login_required
+    def socialMedia():  # socialmedia
+
+        if request.method == "POST":
+            query = request.form["socialMedia"]
+            openAIAnswer = aicontent.aicontent(
+                "Generate a sales pitch for " + query, current_user.get_id()
+            )
+            if openAIAnswer == "exceeded":
+                return redirect(url_for("pricing"))
+            prompt = "AI Suggestions for {} are:".format(query)
+
+        return render_template("social-media.html", **locals())
+
+    @app.route("/business-pitch", methods=["GET", "POST"])
+    @login_required
+    def businessPitch():  # Marketing
+
+        if request.method == "POST":
+            query = request.form["businessPitch"]
+            openAIAnswer = aicontent.aicontent(
+                "Generate a sales pitch for " + query, current_user.get_id()
+            )
+            if openAIAnswer == "exceeded":
+                return redirect(url_for("pricing"))
+            prompt = "AI Suggestions for {} are:".format(query)
+
+        return render_template("business-pitch.html", **locals())
+
+    @app.route("/video-ideas", methods=["GET", "POST"])
+    @login_required
+    def videoIdeas():  # youtube
+
+        if request.method == "POST":
+            query = request.form["videoIdeas"]
+            openAIAnswer = aicontent.aicontent(
+                "generate youtube video ideas for this or these topics " + query,
+                current_user.get_id(),
+            )
+            if openAIAnswer == "exceeded":
+                return redirect(url_for("pricing"))
+            prompt = "AI Suggestions for {} are:".format(query)
+
+        return render_template("video-ideas.html", **locals())
+
+    @app.route("/video-description", methods=["GET", "POST"])
+    @login_required
+    def videoDescription():
+
+        if request.method == "POST":
+            query = request.form["videoDescription"]
+            openAIAnswer = aicontent.aicontent(
+                "write a video description for " + query, current_user.get_id()
+            )
+            if openAIAnswer == "exceeded":
+                return redirect(url_for("pricing"))
+            prompt = "AI Suggestions for {} are:".format(query)
+
+        return render_template("video-description.html", **locals())
+
+    @app.route("/cover-letter", methods=["GET", "POST"])
+    @login_required
+    def coverLetter():
+
+        if request.method == "POST":
+            query = request.form["CoverLetter"]
+            querys = "write a cover letter for this job description " + query
+            openAIAnswer = aicontent.aicontent(
+                querys,
+                current_user.get_id(),
+            )
+            if openAIAnswer == "exceeded":
+                return redirect(url_for("pricing"))
+            prompt = "AI Suggestions are:"
+
+        return render_template("cover-letter.html", **locals())
+
+    @app.route("/video-script", methods=["GET", "POST"])
+    @login_required
+    def videoscript():
+
+        if request.method == "POST":
+            query = request.form["videoscript"]
+            querys = "write a a video script for " + query
+            openAIAnswer = aicontent.aicontent(
+                querys,
+                current_user.get_id(),
+            )
+            if openAIAnswer == "exceeded":
+                return redirect(url_for("pricing"))
+            prompt = "AI Suggestions are:"
+
+        return render_template("video-script.html", **locals())
+
+    @app.route("/choose")
+    @login_required
+    def choose():
+        return render_template("choose.html")
+
 
 api.add_resource(AiVoiceResource)
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(host="127.0.0.1", port=8080, debug=True, threaded=True)
+    app.run(host="127.0.0.1", port=8080, threaded=True)
